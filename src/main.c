@@ -1,34 +1,61 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: anamedin <anamedin@student.42barcel>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/02 16:52:31 by anamedin          #+#    #+#             */
+/*   Updated: 2025/04/02 18:04:44 by anamedin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-/*
+#include "../include/philo.h"
 
-1. Para ejecutar-->  ./philo number_of_philo time_to_die time_to_eat time_to_sleep
 
-- number_of_philosophers: es el número de filósofos, pero también el número
-de tenedores.
-- time_to_die (en milisegundos): si un filósofo no empieza a comer en time_to_die
-milisegundos desde el comienzo de su ultima comida o desde el principio de la
-simulación, este morirá.
-- time_to_eat (en milisegundos): es el tiempo que tiene un filósofo para comer.
-Durante ese tiempo, tendrá los tenedores ocupados.
-- time_to_sleep (en milisegundos): es el tiempo que tiene un filósofo para dormir.
-- number_of_times_each_philosopher_must_eat (argumento opcional): si todos los filósofos comen al menos number_of_times_each_philosopher_must_eat
-veces, la simulación se detendrá. Si no se especifica, la simulación se detendrá
-con la muerte de un filósofo.
+void philo_thinks(int id) {
+    printf(BLUE "Philosopher %d is thinking\n" RESET, id);
+}
 
-2.Cada filósofo tendrá asignado un número del 1 al number_of_philosophers
+void philo_eats(int id) {
+    printf(GREEN "Philosopher %d is eating\n" RESET, id);
+}
 
-3. Cada filósofo debe comer time_to_eat milisegundos, dormir time_to_sleep
-milisegundos y pensar time_to_think milisegundos
-El filósofo número 1 se sentará al lado del filósofo número number_of_philosophers.
-Cualquier otro filósofo número N se sentarán entre el filósofo número N - 1 y el filósofo
-número N + 1.
-*/
-int main(int argc, char **argv)
+void philo_sleeps(int id) {
+    printf(YELLOW "Philosopher %d is sleeping\n" RESET, id);
+}
+
+void philo_die(int id)
 {
-    //t_philo *philo;
-    //t_philo **philo_tab;
-    int i;
+    printf(RED "El filósofo %d ha muerto\n" RESET, id);
+}
 
-    if (argc != 5)
-        return (printf("Error: bad arguments\n"), 1);
-}     
+	
+int main(int ac, char **av)
+{
+    t_philos philos;
+
+    if (init_philos(ac, av, &philos) == 0)
+    {
+        printf("Initialization successful!\n");
+        printf("Number of Philosophers: %d\n", philos.number_of_philosophers);
+        printf("Time to Die: %d\n", philos.time_to_die);
+        printf("Time to Eat: %d\n", philos.time_to_eat);
+        printf("Time to Sleep: %d\n", philos.time_to_sleep);
+        if (philos.is_limited)
+            printf("Number of Times Each Philosopher Must Eat: %d\n", philos.number_of_times_each_philosopher_must_eat);
+        else
+            printf("Unlimited eating.\n");
+
+		  // Simulación de la rutina de los filósofos (con colores)
+        philo_thinks(1);
+        philo_eats(1);
+        philo_sleeps(1);
+		philo_die(1);
+    }
+    else
+        printf("Initialization failed.\n");
+
+    return (0);
+}
+   

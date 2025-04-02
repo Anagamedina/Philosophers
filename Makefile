@@ -1,32 +1,61 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: anamedin <anamedin@student.42barcel>       +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2025/04/02 17:19:39 by anamedin          #+#    #+#              #
+#    Updated: 2025/04/02 18:00:17 by anamedin         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
+
+# Variables de compilación
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -Iinclude
 RM = rm -rf
-ARC = ar -rcs
 
-NAME = philo.a
-HEADER = philo.h
+# Nombre del ejecutable y archivo de cabecera
+NAME = philo
+HEADER = include/philo.h
 
-SRCS = main.c \
+# Directorios
+SRC_DIR = src
+OBJ_DIR = obj
 
+# Archivos fuente y objetos
+SRCS = $(SRC_DIR)/main.c \
+       $(SRC_DIR)/parse_utils.c \
+       $(SRC_DIR)/parse_args.c
 
-OBJS = $(SRCS:.c=.o)
+OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
-#Regla implícita
+# Regla por defecto
 all: $(NAME)
 
+# Crear el ejecutable
 $(NAME): $(OBJS)
-	$(ARC) $(NAME) $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+	chmod +x $(NAME)
 
-%.o: %.c $(HEADER) Makefile
+# Regla para compilar archivos .c a .o
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEADER) Makefile
+	@mkdir -p $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
+# Eliminar archivos objeto
 clean:
-	$(RM) $(OBJS)
+	$(RM) $(OBJ_DIR)
 
+# Eliminar archivos objeto y el archivo ejecutable
 fclean: clean
 	$(RM) $(NAME)
 
+# Reconstruir todo
 re: fclean all
 
-.PHONY: all, clean, fclean, re all bonus
+# Archivos que no son objetivos de archivos
+.PHONY: all clean fclean re
+
+
