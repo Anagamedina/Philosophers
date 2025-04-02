@@ -35,4 +35,14 @@ Este proyecto resuelve el **Problema de los Filósofos Comensales**, un clásico
    ```bash
    git clone https://github.com/tu-usuario/philosophers.git
    cd philosophers
+philosophers/
+├── Makefile            # Script para compilar el proyecto
+├── README.md           # Este archivo
+├── include/            # Archivos de cabecera
+│   └── philo.h         # Definiciones de estructuras y prototipos
+├── src/                # Archivos fuente
+│   ├── main.c          # Función principal
+│   ├── parse_args.c    # Funciones para parsear los argumentos
+│   └── parse_utils.c   # Funciones auxiliares
+└── obj/                # Archivos objeto generados durante la compilación
 
