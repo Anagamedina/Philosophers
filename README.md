@@ -35,14 +35,15 @@ Este proyecto resuelve el **Problema de los Filósofos Comensales**, un clásico
    ```bash
    git clone https://github.com/tu-usuario/philosophers.git
    cd philosophers
-philosophers/
-├── Makefile            # Script para compilar el proyecto
-├── README.md           # Este archivo
-├── include/            # Archivos de cabecera
-│   └── philo.h         # Definiciones de estructuras y prototipos
-├── src/                # Archivos fuente
-│   ├── main.c          # Función principal
-│   ├── parse_args.c    # Funciones para parsear los argumentos
-│   └── parse_utils.c   # Funciones auxiliares
-└── obj/                # Archivos objeto generados durante la compilación
+### Detalles de las carpetas y archivos:
+
+- **Makefile**: Archivo utilizado para compilar el proyecto y generar el ejecutable.
+- **README.md**: Este archivo, que contiene toda la información del proyecto.
+- **include/philo.h**: Contiene las definiciones de las estructuras de datos y los prototipos de las funciones. Este archivo se incluye en los archivos fuente para la declaración de funciones y estructuras.
+- **src/**: Contiene los archivos fuente en C que implementan la lógica de la simulación.
+  - **main.c**: Es el punto de entrada del programa, donde se gestionan los filósofos, su ciclo de vida (pensar, comer, dormir) y la inicialización de los hilos.
+  - **parse_args.c**: Contiene funciones para parsear los argumentos de entrada al programa, asegurándose de que se pasen correctamente y se validen.
+  - **parse_utils.c**: Funciones auxiliares que gestionan la sincronización de los hilos, controlan el tiempo de vida de los filósofos y se encargan de la interacción con los tenedores.
+- **obj/**: Carpeta donde se almacenan los archivos objeto generados al compilar el código (creados por el Makefile). Estos archivos no deben ser editados directamente.
+
 
