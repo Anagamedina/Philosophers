@@ -47,7 +47,7 @@ int ft_strdigit(char **av, int i, int j)
 }
 
 // Función para convertir una cadena a número
-long long ft_atoi(const char *str)
+int ft_atoi(const char* str)
 {
     int             i;
     unsigned long long nbr;

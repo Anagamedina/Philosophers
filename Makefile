@@ -6,7 +6,7 @@
 #    By: anamedin <anamedin@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/02 17:19:39 by anamedin          #+#    #+#              #
-#    Updated: 2025/04/02 18:00:17 by anamedin         ###   ########.fr        #
+#    Updated: 2025/04/04 16:37:07 by anamedin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,11 @@ OBJ_DIR = obj
 # Archivos fuente y objetos
 SRCS = $(SRC_DIR)/main.c \
        $(SRC_DIR)/parse_utils.c \
-       $(SRC_DIR)/parse_args.c
+       $(SRC_DIR)/parse_args.c \
+       $(SRC_DIR)/philosopher_threads.c \
+       $(SRC_DIR)/fork_control.c \
+       $(SRC_DIR)/death_monitor.c
+#include "philo.h"
 
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
