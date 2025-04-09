@@ -5,10 +5,15 @@ set(CMAKE_C_STANDARD 99)
 
 file(GLOB SRC philo/src/*.c)
 
-include_directories(philo/include/philo.h)
+include_directories(philo/include)
 
 add_executable(philosophers
-    ${SRC}
+        philo/src/main.c
+        philo/src/death_monitor.c
+        philo/src/fork_control.c
+        philo/src/parse_args.c
+        philo/src/parse_utils.c
+        philo/src/philosopher_threads.c
 )
-target_compile_options(philosophers PRIVATE -lpthread)
+
 target_link_libraries(philosophers pthread)
