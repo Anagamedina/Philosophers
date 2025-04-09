@@ -15,8 +15,11 @@
 
 void print_fork_taken(t_philos *philo)
 {
+  t_config *config = philo->config;
+
 	pthread_mutex_lock(&philo->config->print_mutex);
-	printf(BLUE "%d %d has taken a fork\n" RESET, get_time_in_ms(), philo->id);
+	printf(BLUE "%d %d has taken a fork\n" RESET, get_time_in_ms() - config->simulation_time
+, philo->id);
 	pthread_mutex_unlock(&philo->config->print_mutex);
 }
 
@@ -52,6 +55,8 @@ void *philosopher_routine(void *arg)
 
 	while (1)
 	{
+// Salir si la simulación terminó
+
 		philo_thinks(philo->id, config);
 
 		// Tomar los tenedores en un orden determinado para evitar deadlock

@@ -11,9 +11,9 @@ include(cmake/utils.cmake)
 
 set(CMAKE_C_STANDARD 99)
 
-file(GLOB SRC_DIR src/*.c)
+file(GLOB SRC_DIR philo/src/*.c)
 
-include_directories(include)
+include_directories(philo/include)
 
 add_executable(Philosophers
         ${SRC_DIR}

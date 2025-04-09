@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../include/philo.h"
 
 int get_time_in_ms(void)
 {
@@ -32,7 +32,8 @@ void ft_usleep(int time_in_ms)
 void philo_thinks(int id, t_config *config)
 {
     pthread_mutex_lock(&config->print_mutex);
-    printf(BLUE "%d %d is thinking\n" RESET, get_time_in_ms(), id);
+    printf(BLUE "%d %d is thinking\n" RESET, get_time_in_ms() - config->simulation_time
+, id);
     pthread_mutex_unlock(&config->print_mutex);
 }
 
@@ -41,7 +42,8 @@ void philo_eats(t_philos *philo)
 	t_config *config = philo->config;
 
 	pthread_mutex_lock(&config->print_mutex);
-	printf(GREEN "%d %d is eating\n" RESET, get_time_in_ms(), philo->id);
+	printf(GREEN "%d %d is eating\n" RESET, get_time_in_ms() - config->simulation_time
+, philo->id);
 	pthread_mutex_unlock(&config->print_mutex);
 
 	pthread_mutex_lock(&philo->meal_mutex);
@@ -58,7 +60,8 @@ void philo_eats(t_philos *philo)
 void philo_sleeps(int id, t_config *config)
 {
     pthread_mutex_lock(&config->print_mutex);
-    printf(YELLOW "%d %d is sleeping\n" RESET, get_time_in_ms(), id);
+    printf(YELLOW "%d %d is sleeping\n" RESET, get_time_in_ms() - config->simulation_time
+, id);
     pthread_mutex_unlock(&config->print_mutex);
 }
 
@@ -72,7 +75,8 @@ void philo_sleeps(int id, t_config *config)
 void philo_die(int id, t_config *config)
 {
 	pthread_mutex_lock(&config->print_mutex);  // Bloqueamos el mutex de impresión para evitar condiciones de carrera al imprimir
-	printf(RED "%d %d died\n" RESET, get_time_in_ms(), id);  // Imprimimos que el filósofo ha muerto
+	printf(RED "%d %d died\n" RESET, get_time_in_ms() - config->simulation_time
+, id);  // Imprimimos que el filósofo ha muerto
 	pthread_mutex_unlock(&config->print_mutex);  // Desbloqueamos el mutex de impresión
 
 	pthread_mutex_lock(&config->end_mutex);  // Bloqueamos el mutex de finalización para garantizar que la simulación termine
