@@ -13,7 +13,7 @@
 
 # Variables de compilación
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -Iinclude
+CFLAGS = -Wall -Wextra -Werror -Iinclude #-g -fsanitize=address
 RM = rm -rf
 
 # Nombre del ejecutable y archivo de cabecera

@@ -12,7 +12,6 @@
 
 #include "../include/philo.h"
 
-
 void print_fork_taken(t_philos *philo)
 {
   t_config *config = philo->config;
@@ -23,30 +22,16 @@ void print_fork_taken(t_philos *philo)
 	pthread_mutex_unlock(&philo->config->print_mutex);
 }
 
-/*void *philosopher_routine(void *arg)
+int	is_simulation_over(t_config *config)
 {
-    t_philos *philo = (t_philos *)arg;
-    t_config *config = philo->config;
+	int	result;
 
-	while (1)
-    	{
-    		philo_thinks(philo->id, config);
-    		pthread_mutex_lock(philo->left_fork);
-    		print_fork_taken(philo);
-    		pthread_mutex_lock(philo->right_fork);
-    		print_fork_taken(philo);
+	pthread_mutex_lock(&config->end_mutex);
+	result = config->simulation_over;
+	pthread_mutex_unlock(&config->end_mutex);
+	return (result);
+}
 
-    		philo_eats(philo);
-    		pthread_mutex_unlock(philo->left_fork);
-    		pthread_mutex_unlock(philo->right_fork);
-
-    		philo_sleeps(philo->id, config);
-    		ft_usleep(config->time_to_sleep);
-    		if (config->is_limited && philo->meals_eaten >= config->number_of_times_each_philosopher_must_eat)
-    			break;
-    	}
-    return NULL;
-}*/
 
 void *philosopher_routine(void *arg)
 {
@@ -55,11 +40,15 @@ void *philosopher_routine(void *arg)
 
 	while (1)
 	{
-// Salir si la simulación terminó
-
+		// pthread_mutex_lock(&philo->config->end_mutex);
+		// if (philo->config->simulation_over)
+		// {
+		// 	pthread_mutex_unlock(&philo->config->end_mutex);
+		// 	break;  // Terminar el hilo si la simulación ha terminado
+		// }
+		// pthread_mutex_unlock(&philo->config->end_mutex);
 		philo_thinks(philo->id, config);
 
-		// Tomar los tenedores en un orden determinado para evitar deadlock
 		if (philo->id % 2 == 0) {
 			pthread_mutex_lock(philo->left_fork);
 			print_fork_taken(philo);
@@ -74,20 +63,27 @@ void *philosopher_routine(void *arg)
 
 		philo_eats(philo);
 
-		// Liberar los tenedores
 		pthread_mutex_unlock(philo->left_fork);
 		pthread_mutex_unlock(philo->right_fork);
 
 		philo_sleeps(philo->id, config);
 		ft_usleep(config->time_to_sleep);
 
-		// Verificar si el filósofo ha comido suficiente veces
+		if (config->is_limited && philo->meals_eaten >= config->number_of_times_each_philosopher_must_eat)
+		{
+			pthread_mutex_lock(&config->end_mutex);
+			config->full_philosophers++;
+			// si aquí ya están todos llenos, marcamos el fin
+			if (config->full_philosophers >= config->number_of_philosophers)
+				config->simulation_over = 1;
+			pthread_mutex_unlock(&config->end_mutex);
+			break;
+		}
 		if (config->is_limited && philo->meals_eaten >= config->number_of_times_each_philosopher_must_eat)
 			break;
 	}
 	return NULL;
 }
-
 
 int main(int ac, char **av)
 {

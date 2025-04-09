@@ -54,10 +54,7 @@ void philo_eats(t_philos *philo)
 	ft_usleep(config->time_to_eat);
 }
 
-
-
-
-void philo_sleeps(int id, t_config *config)
+void	philo_sleeps(int id, t_config *config)
 {
     pthread_mutex_lock(&config->print_mutex);
     printf(YELLOW "%d %d is sleeping\n" RESET, get_time_in_ms() - config->simulation_time
@@ -75,13 +72,12 @@ void philo_sleeps(int id, t_config *config)
 void philo_die(int id, t_config *config)
 {
 	pthread_mutex_lock(&config->print_mutex);  // Bloqueamos el mutex de impresión para evitar condiciones de carrera al imprimir
-	printf(RED "%d %d died\n" RESET, get_time_in_ms() - config->simulation_time
-, id);  // Imprimimos que el filósofo ha muerto
+	printf(RED "%d %d died\n" RESET, get_time_in_ms() - config->simulation_time, id);  // Imprimimos que el filósofo ha muerto
 	pthread_mutex_unlock(&config->print_mutex);  // Desbloqueamos el mutex de impresión
 
-	pthread_mutex_lock(&config->end_mutex);  // Bloqueamos el mutex de finalización para garantizar que la simulación termine
-	config->simulation_over = 1;  // Marcamos la simulación como finalizada
-	pthread_mutex_unlock(&config->end_mutex);  // Desbloqueamos el mutex de finalización
+	// pthread_mutex_lock(&config->end_mutex);  // Bloqueamos el mutex de finalización para garantizar que la simulación termine
+	// config->simulation_over = 1;  // Marcamos la simulación como finalizada
+	// pthread_mutex_unlock(&config->end_mutex);  // Desbloqueamos el mutex de finalización
 }
 /********************************************/
 
