@@ -6,14 +6,14 @@
 #    By: anamedin <anamedin@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/02 17:19:39 by anamedin          #+#    #+#              #
-#    Updated: 2025/04/04 16:37:07 by anamedin         ###   ########.fr        #
+#    Updated: 2025/04/10 13:42:03 by anamedin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
 # Variables de compilación
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -Iinclude #-g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -Iinclude -g -fsanitize=address
 RM = rm -rf
 
 # Nombre del ejecutable y archivo de cabecera

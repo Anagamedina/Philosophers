@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anamedin <anamedin@student.42barcel>       +#+  +:+       +#+        */
+/*   By: anamedin <anamedin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 16:57:20 by anamedin          #+#    #+#             */
-/*   Updated: 2025/04/04 17:39:46 by anamedin         ###   ########.fr       */
+/*   Updated: 2025/04/10 14:45:29 by anamedin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,32 @@
 #define YELLOW "\033[33m"
 #define RESET "\033[0m"
 #define RED "\033[31m"
+typedef struct s_philos
+{
+    int id; 
+	int number_of_philosophers;
+	int time_to_die;
+	int time_to_eat;
+	int time_to_sleep;
+    int last_meal_time;              
+    int meals_eaten;
+    struct s_config *config;               
+    pthread_t thread_id;               
+    pthread_mutex_t *left_fork;        
+    pthread_mutex_t *right_fork;
+	pthread_mutex_t meal_mutex;
+} t_philos;
 
-// Estructura para almacenar los parámetros de la simulación
 typedef struct s_config
 {
 	int number_of_philosophers;
 	int time_to_die;
 	int time_to_eat;
 	int time_to_sleep;
+    int meals_eaten;
 	int number_of_times_each_philosopher_must_eat;
 	int is_limited;
-	int full_philosophers;      // 👈 AÑADE ESTA VARIABLE
+	int full_philosophers;      
 	int simulation_over;
 	int simulation_time;
 	struct s_philos	*philos;
@@ -45,20 +60,9 @@ typedef struct s_config
 	pthread_mutex_t print_mutex;
 	pthread_mutex_t end_mutex;
 } t_config;
-// Estructura para cada filósofo
-typedef struct s_philos
-{
-    int id;                            // Identificador del filósofo
-    int last_meal_time;               // Hora de la última comida (en milisegundos)
-    int meals_eaten;
-    t_config *config;                  // Configuración global
-    pthread_t thread_id;               // Hilo del filósofo
-    pthread_mutex_t *left_fork;        // Tenedor izquierdo
-    pthread_mutex_t *right_fork;
-	pthread_mutex_t meal_mutex;
-} t_philos;
 
-// Funciones de configuración
+
+
 int init_config(int ac, char **av, t_config *config);
 int ft_strdigit(char **av, int i, int j);
 int ft_atoi(const char* str);
@@ -79,7 +83,7 @@ void init_mutex(t_config *config);
 int create_threads(t_config* config);
 void *philosopher_routine(void *arg);
 int	get_time_in_ms(void);
-void ft_usleep(int time_in_ms);
+void ft_usleep(int time_ms);
 void *monitor_philos(void *arg);
 void print_fork_taken(t_philos *philo);
 

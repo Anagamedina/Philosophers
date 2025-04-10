@@ -6,27 +6,40 @@
 /*   By: anamedin <anamedin@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 17:42:04 by anamedin          #+#    #+#             */
-/*   Updated: 2025/04/04 17:35:51 by anamedin         ###   ########.fr       */
+/*   Updated: 2025/04/10 11:05:17 by anamedin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
-
 int get_time_in_ms(void)
 {
-    struct timeval tv;
+    struct  timeval tv;
+    int     time_ms;
+
     gettimeofday(&tv, NULL);
-    return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+    time_ms = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
+    return (time_ms);
 }
 
 
-void ft_usleep(int time_in_ms)
+void ft_usleep(int time_ms)
 {
-	long long start_time = get_time_in_ms();
-	while ((get_time_in_ms() - start_time) < time_in_ms)
-		usleep(100);
+	int  start_time;
+
+    start_time = get_time_in_ms();
+	while ((get_time_in_ms() - start_time) < time_ms)
+		usleep(200);
 }
 
+/*void ft_sleep(int time_ms)
+{
+    int start_time;
+
+    start_time = get_time_in_ms() + time_ms;
+    while((get_time_in_ms() <  start_time))
+        usleep(200);
+}
+*/
 
 /****************************************/
 void philo_thinks(int id, t_config *config)
