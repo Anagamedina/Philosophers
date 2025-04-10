@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anamedin <anamedin@student.42barcel>       +#+  +:+       +#+        */
+/*   By: anamedin <anamedin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 16:52:31 by anamedin          #+#    #+#             */
-/*   Updated: 2025/04/10 13:43:55 by anamedin         ###   ########.fr       */
+/*   Updated: 2025/04/10 15:34:55 by anamedin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,15 +55,15 @@ void	*philosopher_routine(void *arg)
 
 	while (1)
 	{
-		pthread_mutex_lock(&(philo->config->end_mutex));
-		if (is_simulation_over(config) == 1)
-		{
-			printf("is_simulation_over in routine\n");
-			//break ;
-		}
-		if (philo->id % 2 == 1)
-			ft_usleep(config->time_to_eat / 2);
-	//	philo_thinks(philo->id, config);
+		// pthread_mutex_lock(&(philo->config->end_mutex));
+		// if (is_simulation_over(config) == 1)
+		// {
+		// 	printf("is_simulation_over in routine\n");
+		// 	//break ;
+		// }
+		// if (philo->id % 2 == 1)
+		// 	ft_usleep(config->time_to_eat / 2);
+		philo_thinks(philo->id, config);
 		if (philo->id % 2 == 0) {
 			pthread_mutex_lock(philo->left_fork);
 			print_fork_taken(philo);

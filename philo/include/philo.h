@@ -6,7 +6,7 @@
 /*   By: anamedin <anamedin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 16:57:20 by anamedin          #+#    #+#             */
-/*   Updated: 2025/04/10 14:45:29 by anamedin         ###   ########.fr       */
+/*   Updated: 2025/04/10 15:31:22 by anamedin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ typedef struct s_philos
 	int time_to_sleep;
     int last_meal_time;              
     int meals_eaten;
-    struct s_config *config;               
+	struct s_config *config;               
     pthread_t thread_id;               
     pthread_mutex_t *left_fork;        
     pthread_mutex_t *right_fork;
