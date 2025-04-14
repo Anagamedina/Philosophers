@@ -49,12 +49,11 @@ int	main(int ac, char **av)
 			return (1);
 		if (join_threads(&config))
 			return (1);
-		free(config.philos);
-		free(config.forks);
 	}
 	else
 		printf("Initialization failed.\n");
 	if (config.is_limited && config.full_philosophers == config.number_of_philosophers)
 		printf("FULL PHILOSOPHERS, THE SIMULATION IS OVER.\n");
+	free_all(&config);
 	return (0);
 }

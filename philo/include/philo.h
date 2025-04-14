@@ -100,6 +100,7 @@ int	check_argument_limits(int ac, char **av);
 int	check_full_and_stop(t_philos *philo);
 void	take_forks(t_philos *philo);
 int	handle_one_philosopher(t_philos *philo);
+void	free_all(t_config *config);
 
 
 #endif

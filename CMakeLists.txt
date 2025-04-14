@@ -14,6 +14,7 @@ add_executable(philosophers
         philo/src/init_structs.c
         philo/src/parse_utils.c
         philo/src/init_config.c
+        philo/src/free.c
         philo/src/philosopher_threads.c
 )
 

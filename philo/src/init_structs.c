@@ -31,16 +31,10 @@ void init_philosophers(t_config *config)
 		config->philos[i].last_meal_time = now;
 		config->philos[i].death_timer = now + config->time_to_die;
 		//config->philos[i].death_timer = config->simulation_time + config->time_to_die;
-		// Asignamos el tenedor derecho
 		if (i == 0)
-			config->philos[i].right_fork = &(config->forks[config->number_of_philosophers - 1]);  // El primer filósofo toma el último tenedor
+			config->philos[i].right_fork = &(config->forks[config->number_of_philosophers - 1]);
 		else
-			config->philos[i].right_fork = &(config->forks[i - 1]);  // Los demás filósofos toman el tenedor anterior
-
-		// Inicializamos el mutex para el tiempo de la comida
-		pthread_mutex_init(&config->philos[i].meal_mutex, NULL);
-
-		pthread_mutex_init(&config->philos[i].deadline_to_eat, NULL);
+			config->philos[i].right_fork = &(config->forks[i - 1]);
 		i ++;
 	}
 }
@@ -57,5 +51,7 @@ void init_mutex(t_config *config)
 	}
 	pthread_mutex_init(&(config->print_mutex), NULL);
 	pthread_mutex_init(&(config->end_mutex), NULL);
+	pthread_mutex_init(&config->philos[i].meal_mutex, NULL);
+	pthread_mutex_init(&config->philos[i].deadline_to_eat, NULL);
 }
 
