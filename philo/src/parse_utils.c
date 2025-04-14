@@ -22,7 +22,6 @@ void print_fork_taken(t_philos *philo, char* str_fork)
 	pthread_mutex_unlock(&philo->config->print_mutex);
 }
 
-
 size_t	ft_strlen(char *s)
 {
 	size_t	i;

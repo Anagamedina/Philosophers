@@ -26,6 +26,7 @@
 # define YELLOW "\033[33m"
 # define RESET "\033[0m"
 # define RED "\033[31m"
+# define CYAN "\033[36m"
 # define PRINT_LEFT "has taken left fork"
 # define PRINT_RIGHT "has taken right fork"
 
@@ -36,7 +37,8 @@ typedef struct s_philos
 	int time_to_die;
 	int time_to_eat;
 	int time_to_sleep;
-    int last_meal_time;              
+    //int last_meal_time;
+	int number_of_times_each_philosopher_must_eat;
     int death_timer;
 	int	is_full;
     int meals_eaten;
@@ -44,7 +46,7 @@ typedef struct s_philos
     pthread_t thread_id;               
     pthread_mutex_t *left_fork;        
     pthread_mutex_t *right_fork;
-	pthread_mutex_t meal_mutex;
+	//pthread_mutex_t meal_mutex;
 	pthread_mutex_t deadline_to_eat;
 } t_philos;
 
@@ -66,8 +68,6 @@ typedef struct s_config
 	pthread_mutex_t print_mutex;
 	pthread_mutex_t end_mutex;
 } t_config;
-
-
 
 int init_config(int ac, char **av, t_config *config);
 int ft_strdigit(char **av, int i, int j);

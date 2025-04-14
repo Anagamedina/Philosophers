@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../include/philo.h"
+
 int get_time_in_ms(void)
 {
     struct  timeval tv;
@@ -21,27 +22,26 @@ int get_time_in_ms(void)
     return (time_ms);
 }
 
-
 void ft_usleep(int time_ms)
 {
 	int  start_time;
 
     start_time = get_time_in_ms();
 	while ((get_time_in_ms() - start_time) < time_ms)
+		// usleep(100);
 		usleep(50);
 }
-
 
 /****************************************/
 void philo_thinks(int id, t_config *config)
 {
     pthread_mutex_lock(&config->print_mutex);
-    printf(BLUE "%d %d is thinking\n" RESET, get_time_in_ms() - config->simulation_time
+    printf(CYAN "%d %d is thinking\n" CYAN, get_time_in_ms() - config->simulation_time
 , id);
     pthread_mutex_unlock(&config->print_mutex);
 }
 
-void philo_eats(t_philos *philo)
+/*void philo_eats(t_philos *philo)
 {
 	t_config *config = philo->config;
 
@@ -60,7 +60,19 @@ void philo_eats(t_philos *philo)
 	pthread_mutex_unlock(&philo->deadline_to_eat);
 
 	ft_usleep(config->time_to_eat);
-}
+}*/
+
+/*void	philo_eats(t_philos *philo)
+{
+	t_config *config = philo->config;
+
+	pthread_mutex_lock(&config->print_mutex);
+	printf(GREEN "%d %d is eating\n" RESET,
+		get_time_in_ms() - config->simulation_time, philo->id);
+	pthread_mutex_unlock(&config->print_mutex);
+
+	ft_usleep(config->time_to_eat);
+}*/
 
 void	philo_sleeps(int id, t_config *config)
 {
@@ -70,7 +82,7 @@ void	philo_sleeps(int id, t_config *config)
     pthread_mutex_unlock(&config->print_mutex);
 }
 
-void philo_die(int id, t_config *config)
+void	philo_die(int id, t_config *config)
 {
 	pthread_mutex_lock(&config->print_mutex);
 	printf(RED "%d %d died\n" RESET, get_time_in_ms() - config->simulation_time, id);

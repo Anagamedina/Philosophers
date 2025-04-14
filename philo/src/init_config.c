@@ -65,16 +65,19 @@ int init_config(int ac, char **av, t_config *config)
 	config->time_to_die = ft_atoi(av[2]);
 	config->time_to_eat = ft_atoi(av[3]);
 	config->time_to_sleep = ft_atoi(av[4]);
-
+	config->meals_eaten = 0;
 	if (set_eat_limit(config, ac, av))
 		return (1);
-
 	if (config->number_of_philosophers <= 0 || config->time_to_die <= 0 ||
 		config->time_to_eat <= 0 || config->time_to_sleep <= 0)
 		return (1);
-
-	config->simulation_over = -1;
+	config->full_philosophers = 0;
+	config->simulation_over = 0;
+	config->simulation_time = get_time_in_ms();
 	config->philos = malloc(sizeof(t_philos) * config->number_of_philosophers);
+	config->forks = malloc(sizeof(pthread_mutex_t) * config->number_of_philosophers);
 	config->threads = malloc(sizeof(pthread_t) * config->number_of_philosophers);
+	pthread_mutex_init(&(config->print_mutex), NULL); //printf
+	pthread_mutex_init(&(config->end_mutex), NULL); // check if simulation is over
 	return (0);
 }

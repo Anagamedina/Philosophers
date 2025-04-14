@@ -9,7 +9,6 @@ void	free_philosophers(t_config *config)
 	i = 0;
 	while (i < config->number_of_philosophers)
 	{
-		pthread_mutex_destroy(&config->philos[i].meal_mutex);
 		pthread_mutex_destroy(&config->philos[i].deadline_to_eat);
 		i++;
 	}

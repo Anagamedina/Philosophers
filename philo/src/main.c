@@ -35,6 +35,7 @@ int	join_threads(t_config *config)
 	}
 	return (0);
 }
+
 int	main(int ac, char **av)
 {
 	t_config	config;
@@ -47,7 +48,7 @@ int	main(int ac, char **av)
 		create_threads(&config);
 		if (create_monitor(&config) != 0)
 			return (1);
-		if (join_threads(&config))
+		if (join_threads(&config) == 1)
 			return (1);
 	}
 	else
