@@ -66,6 +66,12 @@ int	check_full_and_stop(t_philos *philo)
 }
 
 
+void	release_forks(t_philos *philo)
+{
+	pthread_mutex_unlock(philo->left_fork);
+	pthread_mutex_unlock(philo->right_fork);
+}
+
 
 void	*philosopher_routine(void *arg)
 {
@@ -148,69 +154,6 @@ void	*philosopher_routine(void *arg)
 	return (NULL);
 }
 
-/*void	*philosopher_routine(void *arg)
-{
-	t_philos	*philo = (t_philos *)arg;
-	t_config	*config = philo->config;
-
-	while (get_time_in_ms() < config->simulation_time)
-		usleep(100);
-
-	pthread_mutex_lock(&philo->deadline_to_eat);
-	philo->death_timer = get_time_in_ms() + config->time_to_die;
-	pthread_mutex_unlock(&philo->deadline_to_eat);
-
-	if (handle_one_philosopher(philo) == 1)
-		return (NULL);
-
-	if (philo->id % 2 == 1)
-		ft_usleep(philo->time_to_eat / 2);
-	int end_flag = 0;
-	while (end_flag == 0)
-	{
-		//	take forks
-		pthread_mutex_lock(philo->left_fork);
-		print_fork_taken(philo, PRINT_LEFT);
-		pthread_mutex_lock(philo->right_fork);
-		print_fork_taken(philo, PRINT_RIGHT);
-
-		//	eat
-		pthread_mutex_lock(&config->print_mutex);
-		printf(GREEN "%d %d is eating\n" RESET,
-			get_time_in_ms() - config->simulation_time, philo->id);
-		pthread_mutex_unlock(&config->print_mutex);
-
-		//death mutex
-		pthread_mutex_lock(&philo->deadline_to_eat);
-		philo->death_timer = get_time_in_ms() + philo->time_to_die;
-		pthread_mutex_unlock(&philo->deadline_to_eat);
-
-		ft_usleep(config->time_to_eat);
-
-		// add meals
-		philo->meals_eaten++;
-
-		if (check_full_and_stop(philo) == 1)
-			break ;
-
-		pthread_mutex_unlock(philo->left_fork);
-		pthread_mutex_unlock(philo->right_fork);
-
-		// sleep
-		philo_sleeps(philo->id, config);
-		ft_usleep(philo->time_to_sleep);
-
-		philo_thinks(philo->id, config);
-		pthread_mutex_lock(&config->end_mutex);
-		end_flag = config->simulation_over;
-		pthread_mutex_unlock(&config->end_mutex);
-	}
-	// Liberar tenedores por si sale con ellos bloqueados
-	pthread_mutex_unlock(philo->left_fork);
-	pthread_mutex_unlock(philo->right_fork);
-	return (NULL);
-}*/
-
 int create_threads(t_config* config)
 {
     int i = 0;
@@ -226,59 +169,3 @@ int create_threads(t_config* config)
     }
 	return (0);
 }
-
-/*
- *
-* void	*philosopher_routine(void *arg)
-{
-	t_philos	*philo = (t_philos *)arg;
-	t_config	*config = philo->config;
-
-	while (get_time_in_ms() < config->simulation_time)
-		usleep(100);
-
-	printf("Philo %d start: %d ms\n", philo->id, get_time_in_ms() - config->simulation_time);
-	while (1)
-	{
-		if (config->is_limited == 1 && config->simulation_over == 1)
-			break ;
-		if (config->number_of_philosophers == 1)
-		{
-			pthread_mutex_lock(philo->left_fork);
-			print_fork_taken(philo, PRINT_LEFT);
-			ft_usleep(config->time_to_die);
-			philo_die(philo->id, config);
-			return (NULL);
-		}
-		// if (philo->id % 2 == 1)
-		// 	ft_usleep(config->time_to_eat / 2);
-		philo_thinks(philo->id, config);
-		if (philo->id % 2 == 0) {
-			pthread_mutex_lock(philo->left_fork);
-			print_fork_taken(philo, PRINT_LEFT);
-			pthread_mutex_lock(philo->right_fork);
-			print_fork_taken(philo, PRINT_RIGHT);
-		} else {
-			pthread_mutex_lock(philo->right_fork);
-			print_fork_taken(philo, PRINT_LEFT);
-			pthread_mutex_lock(philo->left_fork);
-			print_fork_taken(philo, PRINT_RIGHT);
-		}
-		philo_eats(philo);
-		pthread_mutex_unlock(philo->left_fork);
-		pthread_mutex_unlock(philo->right_fork);
-		philo_sleeps(philo->id, config);
-		ft_usleep(config->time_to_sleep);
-		if (config->is_limited == 1 && philo->meals_eaten >= config->number_of_times_each_philosopher_must_eat)
-		{
-			pthread_mutex_lock(&config->end_mutex);
-			config->full_philosophers++;
-			if (config->full_philosophers >= config->number_of_philosophers)
-				config->simulation_over = 1;
-			pthread_mutex_unlock(&config->end_mutex);
-			break ;
-		}
-	}
-	return (NULL);
-}
- */

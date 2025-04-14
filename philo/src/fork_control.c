@@ -45,35 +45,20 @@ void philo_thinks(int id, t_config *config)
 {
 	t_config *config = philo->config;
 
-	pthread_mutex_lock(&config->print_mutex);
-	printf(GREEN "%d %d is eating\n" RESET, get_time_in_ms() - config->simulation_time
-, philo->id);
-	pthread_mutex_unlock(&config->print_mutex);
-
-	pthread_mutex_lock(&philo->meal_mutex);
-	//philo->last_meal_time = get_time_in_ms() - config->simulation_time;
-	philo->last_meal_time = get_time_in_ms();
-	philo->meals_eaten++;
-	pthread_mutex_unlock(&philo->meal_mutex);
-	pthread_mutex_lock(&philo->deadline_to_eat);
-	philo->death_timer = get_time_in_ms() + config->time_to_die;
-	pthread_mutex_unlock(&philo->deadline_to_eat);
-
-	ft_usleep(config->time_to_eat);
-}*/
-
-/*void	philo_eats(t_philos *philo)
-{
-	t_config *config = philo->config;
+	if (is_simulation_over(config))
+		return ;
 
 	pthread_mutex_lock(&config->print_mutex);
 	printf(GREEN "%d %d is eating\n" RESET,
 		get_time_in_ms() - config->simulation_time, philo->id);
 	pthread_mutex_unlock(&config->print_mutex);
 
+	pthread_mutex_lock(&philo->deadline_to_eat);
+	philo->death_timer = get_time_in_ms() + config->time_to_die;
+	pthread_mutex_unlock(&philo->deadline_to_eat);
+
 	ft_usleep(config->time_to_eat);
 }*/
-
 void	philo_sleeps(int id, t_config *config)
 {
     pthread_mutex_lock(&config->print_mutex);
@@ -81,6 +66,8 @@ void	philo_sleeps(int id, t_config *config)
 , id);
     pthread_mutex_unlock(&config->print_mutex);
 }
+
+
 
 void	philo_die(int id, t_config *config)
 {

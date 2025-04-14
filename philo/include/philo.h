@@ -101,6 +101,7 @@ int	check_full_and_stop(t_philos *philo);
 void	take_forks(t_philos *philo);
 int	handle_one_philosopher(t_philos *philo);
 void	free_all(t_config *config);
+void	release_forks(t_philos *philo);
 
 
 #endif

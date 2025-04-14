@@ -11,33 +11,7 @@
 /* ************************************************************************** */
 
 #include "../include/philo.h"
-
-/*int	check_philo_death(t_philos *philo, t_config *config)
-{
-	int	now;
-	int	last_meal;
-
-	pthread_mutex_lock(&philo->meal_mutex);
-	last_meal = philo->last_meal_time;
-	pthread_mutex_unlock(&philo->meal_mutex);
-
-	now = get_time_in_ms();
-	if (now - last_meal >= config->time_to_die)
-	{
-		pthread_mutex_lock(&config->end_mutex);
-		if (config->simulation_over == 0) // evita mensaje duplicado
-		{
-			config->simulation_over = 1;
-			pthread_mutex_unlock(&config->end_mutex);
-			philo_die(philo->id, config); // ¡fuera del mutex!
-		}
-		else
-			pthread_mutex_unlock(&config->end_mutex);
-		return (1);
-	}
-	return (0);
-}*/
-
+/*
 int	check_philo_death(t_philos *philo, t_config *config)
 {
 	int	now = get_time_in_ms();
@@ -61,7 +35,33 @@ int	check_philo_death(t_philos *philo, t_config *config)
 	pthread_mutex_unlock(&philo->deadline_to_eat);
 	return (0);
 }
+*/
+static void	safe_end_simulation(t_config *config, int id)
+{
+	pthread_mutex_lock(&config->end_mutex);
+	if (config->simulation_over == 0)
+	{
+		config->simulation_over = 1;
+		pthread_mutex_unlock(&config->end_mutex);
+		philo_die(id, config);
+	}
+	else
+		pthread_mutex_unlock(&config->end_mutex);
+}
+int	check_philo_death(t_philos *philo, t_config *config)
+{
+	int	now = get_time_in_ms();
 
+	pthread_mutex_lock(&philo->deadline_to_eat);
+	if (now >= philo->death_timer)
+	{
+		pthread_mutex_unlock(&philo->deadline_to_eat);
+		safe_end_simulation(config, philo->id);
+		return (1);
+	}
+	pthread_mutex_unlock(&philo->deadline_to_eat);
+	return (0);
+}
 int	check_full_philos(t_config *config)
 {
 	int result;
@@ -71,9 +71,7 @@ int	check_full_philos(t_config *config)
 	result = config->simulation_over;
 	pthread_mutex_unlock(&config->end_mutex);
 	return (result);
-
 }
-
 
 void	*monitor_simulation(void *arg)
 {
@@ -91,7 +89,7 @@ void	*monitor_simulation(void *arg)
 		}
 		if (config->is_limited && check_full_philos(config))
 			return (NULL);
-		// usleep(100);
+		usleep(100);
 	}
 	return (NULL);
 }
@@ -108,30 +106,3 @@ int	create_monitor(t_config *config)
 	pthread_detach(monitor_thread);
 	return (0);
 }
-/*void	*monitor_simulation(void *arg)
-{
-	t_config	*config = (t_config *)arg;
-	int			i;
-
-
-	while (1)
-	{
-		if (!is_simulation_over(config))
-			return (NULL);
-		i = 0;
-		while (i < config->number_of_philosophers)
-		{
-			if (check_philo_death(&config->philos[i], config))
-				return (NULL);
-			i++;
-		}
-
-		if (config->is_limited == 1 && check_full_philos(config) == 1)
-			return (NULL);
-
-		usleep(50);
-	}
-	return (NULL);
-}
-*/
-
