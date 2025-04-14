@@ -11,8 +11,9 @@ add_executable(philosophers
         philo/src/main.c
         philo/src/death_monitor.c
         philo/src/fork_control.c
-        philo/src/parse_args.c
+        philo/src/init_structs.c
         philo/src/parse_utils.c
+        philo/src/init_config.c
         philo/src/philosopher_threads.c
 )
 

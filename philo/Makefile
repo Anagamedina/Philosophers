@@ -27,7 +27,8 @@ OBJ_DIR = obj
 # Archivos fuente y objetos
 SRCS = $(SRC_DIR)/main.c \
        $(SRC_DIR)/parse_utils.c \
-       $(SRC_DIR)/parse_args.c \
+       $(SRC_DIR)/init_structs.c \
+       $(SRC_DIR)/init_config.c \
        $(SRC_DIR)/philosopher_threads.c \
        $(SRC_DIR)/fork_control.c \
        $(SRC_DIR)/death_monitor.c

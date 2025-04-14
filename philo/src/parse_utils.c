@@ -12,12 +12,16 @@
 
 #include "../include/philo.h"
 
-
-
-void	ft_putstr_fd(char *s, int fd)
+void print_fork_taken(t_philos *philo, char* str_fork)
 {
-	write(fd, s, sizeof(char) * ft_strlen(s));
+	t_config *config = philo->config;
+
+	pthread_mutex_lock(&philo->config->print_mutex);
+	printf(BLUE "%d %d  %s \n"  RESET, get_time_in_ms() - config->simulation_time
+, philo->id, str_fork);
+	pthread_mutex_unlock(&philo->config->print_mutex);
 }
+
 
 size_t	ft_strlen(char *s)
 {
@@ -46,7 +50,6 @@ int ft_strdigit(char **av, int i, int j)
     return (0);
 }
 
-// Función para convertir una cadena a número
 int ft_atoi(const char* str)
 {
     int             i;
@@ -56,22 +59,22 @@ int ft_atoi(const char* str)
     i = 0;
     nbr = 0;
     flag = 0;
-    while ((str[i] >= 9 && str[i] <= 13) || str[i] == ' ')  // Espacios y saltos de línea
+    while ((str[i] >= 9 && str[i] <= 13) || str[i] == ' ')
         i++;
-    if (str[i] == '+')  // Ignorar signo +
+    if (str[i] == '+')
         i++;
-    else if (str[i] == '-')  // Si es negativo
+    else if (str[i] == '-')
     {
         flag = 1;
         i++;
     }
-    while (str[i] >= '0' && str[i] <= '9')  // Convertir los caracteres en número
+    while (str[i] >= '0' && str[i] <= '9')
     {
         nbr = nbr * 10 + (str[i] - '0');
         i++;
     }
     if (flag == 1)
-        nbr = -nbr;  // Hacer el número negativo si corresponde
+        nbr = -nbr;
     return (nbr);
 }
 

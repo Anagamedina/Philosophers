@@ -12,31 +12,86 @@
 
 #include "../include/philo.h"
 
-void init_philosophers(t_config *config)
+int	handle_one_philosopher(t_philos *philo)
 {
-	int i;
+	t_config *config = philo->config;
 
-	i = 0;
-	while (i < config->number_of_philosophers)
+	if (config->number_of_philosophers == 1)
 	{
-		config->philos[i].id = i + 1;  // Asignamos el ID al filósofo (1 a N)
-		config->philos[i].meals_eaten = 0;  // Inicializamos las comidas a 0
-		config->philos[i].last_meal_time = get_time_in_ms();  // Inicializamos el tiempo de la última comida con el tiempo actual
-		config->philos[i].config = config;  // Asignamos la configuración global
-		config->philos[i].left_fork = &(config->forks[i]);  // Asignamos el tenedor izquierdo
-
-		// Inicializamos el mutex para el tiempo de la comida
-		pthread_mutex_init(&config->philos[i].meal_mutex, NULL);
-
-		// Asignamos el tenedor derecho
-		if (i == 0)
-			config->philos[i].right_fork = &(config->forks[config->number_of_philosophers - 1]);  // El primer filósofo toma el último tenedor
-		else
-			config->philos[i].right_fork = &(config->forks[i - 1]);  // Los demás filósofos toman el tenedor anterior
-
-		i++;
+		pthread_mutex_lock(philo->left_fork);
+		print_fork_taken(philo, PRINT_LEFT);
+		ft_usleep(config->time_to_die);
+		philo_die(philo->id, config);
+		return (1);
 	}
-	config->simulation_time = get_time_in_ms();  // Marcamos el tiempo de inicio de la simulación
+	return (0);
+}
+
+void	take_forks(t_philos *philo)
+{
+	if (philo->id % 2 == 0)
+	{
+		pthread_mutex_lock(philo->left_fork);
+		print_fork_taken(philo, PRINT_LEFT);
+		pthread_mutex_lock(philo->right_fork);
+		print_fork_taken(philo, PRINT_RIGHT);
+	}
+	else
+	{
+		pthread_mutex_lock(philo->right_fork);
+		print_fork_taken(philo, PRINT_LEFT);
+		pthread_mutex_lock(philo->left_fork);
+		print_fork_taken(philo, PRINT_RIGHT);
+	}
+}
+
+int	check_full_and_stop(t_philos *philo)
+{
+	t_config *config = philo->config;
+
+	if (config->is_limited == 1 && philo->meals_eaten >= config->number_of_times_each_philosopher_must_eat)
+	{
+		pthread_mutex_lock(&config->end_mutex);
+		config->full_philosophers++;
+		if (config->full_philosophers >= config->number_of_philosophers)
+			config->simulation_over = 1;
+		pthread_mutex_unlock(&config->end_mutex);
+		return (1);
+	}
+	return (0);
+}
+
+void	*philosopher_routine(void *arg)
+{
+	t_philos	*philo = (t_philos *)arg;
+	t_config	*config = philo->config;
+
+	while (get_time_in_ms() < config->simulation_time)
+		usleep(100);
+
+	printf("Philo %d start: %d ms\n", philo->id,
+		get_time_in_ms() - config->simulation_time);
+
+	while (1)
+	{
+		if (config->is_limited == 1 && config->simulation_over == 1)
+			break ;
+		if (handle_one_philosopher(philo) == 1)
+			break ;
+
+		// if (philo->id % 2 == 1)
+		// 	ft_usleep(config->time_to_eat / 2);
+		philo_thinks(philo->id, config);
+		take_forks(philo);
+		philo_eats(philo);
+		pthread_mutex_unlock(philo->left_fork);
+		pthread_mutex_unlock(philo->right_fork);
+		philo_sleeps(philo->id, config);
+		ft_usleep(config->time_to_sleep);
+		if (check_full_and_stop(philo))
+			break ;
+	}
+	return (NULL);
 }
 
 int create_threads(t_config* config)
@@ -55,3 +110,58 @@ int create_threads(t_config* config)
 	return (0);
 }
 
+/*
+ *
+* void	*philosopher_routine(void *arg)
+{
+	t_philos	*philo = (t_philos *)arg;
+	t_config	*config = philo->config;
+
+	while (get_time_in_ms() < config->simulation_time)
+		usleep(100);
+
+	printf("Philo %d start: %d ms\n", philo->id, get_time_in_ms() - config->simulation_time);
+	while (1)
+	{
+		if (config->is_limited == 1 && config->simulation_over == 1)
+			break ;
+		if (config->number_of_philosophers == 1)
+		{
+			pthread_mutex_lock(philo->left_fork);
+			print_fork_taken(philo, PRINT_LEFT);
+			ft_usleep(config->time_to_die);
+			philo_die(philo->id, config);
+			return (NULL);
+		}
+		// if (philo->id % 2 == 1)
+		// 	ft_usleep(config->time_to_eat / 2);
+		philo_thinks(philo->id, config);
+		if (philo->id % 2 == 0) {
+			pthread_mutex_lock(philo->left_fork);
+			print_fork_taken(philo, PRINT_LEFT);
+			pthread_mutex_lock(philo->right_fork);
+			print_fork_taken(philo, PRINT_RIGHT);
+		} else {
+			pthread_mutex_lock(philo->right_fork);
+			print_fork_taken(philo, PRINT_LEFT);
+			pthread_mutex_lock(philo->left_fork);
+			print_fork_taken(philo, PRINT_RIGHT);
+		}
+		philo_eats(philo);
+		pthread_mutex_unlock(philo->left_fork);
+		pthread_mutex_unlock(philo->right_fork);
+		philo_sleeps(philo->id, config);
+		ft_usleep(config->time_to_sleep);
+		if (config->is_limited == 1 && philo->meals_eaten >= config->number_of_times_each_philosopher_must_eat)
+		{
+			pthread_mutex_lock(&config->end_mutex);
+			config->full_philosophers++;
+			if (config->full_philosophers >= config->number_of_philosophers)
+				config->simulation_over = 1;
+			pthread_mutex_unlock(&config->end_mutex);
+			break ;
+		}
+	}
+	return (NULL);
+}
+ */

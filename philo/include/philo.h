@@ -20,12 +20,15 @@
 #include <pthread.h>
 #include <sys/time.h>
 
-#define PHILO_LIMITATION 200 // Limite de filósofos (puedes cambiarlo)
-#define BLUE "\033[34m"
-#define GREEN "\033[32m"
-#define YELLOW "\033[33m"
-#define RESET "\033[0m"
-#define RED "\033[31m"
+# define PHILO_LIMITATION 200 // Limite de filósofos (puedes cambiarlo)
+# define BLUE "\033[34m"
+# define GREEN "\033[32m"
+# define YELLOW "\033[33m"
+# define RESET "\033[0m"
+# define RED "\033[31m"
+# define PRINT_LEFT "has taken left fork"
+# define PRINT_RIGHT "has taken right fork"
+
 typedef struct s_philos
 {
     int id; 
@@ -34,12 +37,15 @@ typedef struct s_philos
 	int time_to_eat;
 	int time_to_sleep;
     int last_meal_time;              
+    int death_timer;
+	int	is_full;
     int meals_eaten;
 	struct s_config *config;               
     pthread_t thread_id;               
     pthread_mutex_t *left_fork;        
     pthread_mutex_t *right_fork;
 	pthread_mutex_t meal_mutex;
+	pthread_mutex_t deadline_to_eat;
 } t_philos;
 
 typedef struct s_config
@@ -85,8 +91,16 @@ void *philosopher_routine(void *arg);
 int	get_time_in_ms(void);
 void ft_usleep(int time_ms);
 void *monitor_philos(void *arg);
-void print_fork_taken(t_philos *philo);
-
+void print_fork_taken(t_philos *philo, char* str_fork);
+int	is_simulation_over(t_config *config);
 int	create_monitor(t_config *config);
+int set_eat_limit(t_config *config, int ac, char **av);
+int is_valid_arguments(int ac, char **av);
+int	check_argument_limits(int ac, char **av);
+int	check_full_and_stop(t_philos *philo);
+void	take_forks(t_philos *philo);
+int	handle_one_philosopher(t_philos *philo);
+
+
 #endif
 
