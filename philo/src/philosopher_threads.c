@@ -93,11 +93,6 @@ void	*philosopher_routine(void *arg)
 	philo = (t_philos *)arg;
 	config = philo->config;
 	philo_sync_start(philo);
-	/*while (get_time_in_ms() < config->simulation_time)
-		usleep(100);
-	pthread_mutex_lock(&philo->deadline_to_eat);
-	philo->death_timer = get_time_in_ms() + config->time_to_die;
-	pthread_mutex_unlock(&philo->deadline_to_eat);*/
 	if (handle_one_philosopher(philo) == 1)
 		return (NULL);
 	if (philo->id % 2 == 1)
