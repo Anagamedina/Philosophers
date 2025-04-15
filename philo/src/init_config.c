@@ -66,8 +66,11 @@ int	set_eat_limit(t_config *config, int ac, char **av)
 
 int	init_config(int ac, char **av, t_config *config)
 {
+	config->philos = NULL;
+	config->forks = NULL;
+	config->threads = NULL;
 	if (!is_valid_arguments(ac, av))
-		return (printf("Error: Incorrect number of arguments\n"), 1);
+		return (1);
 	if (check_argument_limits(ac, av))
 		return (1);
 	config->num_of_philo = ft_atoi(av[1]);
