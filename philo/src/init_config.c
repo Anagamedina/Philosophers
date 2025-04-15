@@ -39,14 +39,14 @@ int set_eat_limit(t_config *config, int ac, char **av)
 {
 	if (ac == 6)
 	{
-		config->number_of_times_each_philosopher_must_eat = ft_atoi(av[5]);
-		if (config->number_of_times_each_philosopher_must_eat <= 0)
+		config->max_meals = ft_atoi(av[5]);
+		if (config->max_meals <= 0)
 			return (1);
 		config->is_limited = 1;
 	}
 	else
 	{
-		config->number_of_times_each_philosopher_must_eat = -1;
+		config->max_meals = -1;
 		config->is_limited = 0;
 	}
 	return (0);
@@ -64,22 +64,22 @@ int init_config(int ac, char **av, t_config *config)
 	}
 	if (check_argument_limits(ac, av))
 		return (1);
-	config->number_of_philosophers = ft_atoi(av[1]);
+	config->num_of_philo = ft_atoi(av[1]);
 	config->time_to_die = ft_atoi(av[2]);
 	config->time_to_eat = ft_atoi(av[3]);
 	config->time_to_sleep = ft_atoi(av[4]);
 	config->meals_eaten = 0;
 	if (set_eat_limit(config, ac, av))
 		return (1);
-	if (config->number_of_philosophers <= 0 || config->time_to_die <= 0 ||
+	if (config->num_of_philo <= 0 || config->time_to_die <= 0 ||
 		config->time_to_eat <= 0 || config->time_to_sleep <= 0)
 		return (1);
 	config->full_philosophers = 0;
 	config->simulation_over = 0;
 	config->simulation_time = get_time_in_ms();
-	config->philos = malloc(sizeof(t_philos) * config->number_of_philosophers);
-	config->forks = malloc(sizeof(pthread_mutex_t) * config->number_of_philosophers);
-	config->threads = malloc(sizeof(pthread_t) * config->number_of_philosophers);
+	config->philos = malloc(sizeof(t_philos) * config->num_of_philo);
+	config->forks = malloc(sizeof(pthread_mutex_t) * config->num_of_philo);
+	config->threads = malloc(sizeof(pthread_t) * config->num_of_philo);
 	if (!config->philos || !config->forks || !config->threads)
 		return (1);
 	pthread_mutex_init(&(config->print_mutex), NULL); //printf

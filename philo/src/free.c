@@ -7,7 +7,7 @@ void	free_philosophers(t_config *config)
 	if (!config->philos)
 		return;
 	i = 0;
-	while (i < config->number_of_philosophers)
+	while (i < config->num_of_philo)
 	{
 		pthread_mutex_destroy(&config->philos[i].deadline_to_eat);
 		i++;
@@ -23,7 +23,7 @@ void	free_forks(t_config *config)
 	if (!config->forks)
 		return;
 	i = 0;
-	while (i < config->number_of_philosophers)
+	while (i < config->num_of_philo)
 	{
 		pthread_mutex_destroy(&config->forks[i]);
 		i++;

@@ -27,7 +27,7 @@ int	join_threads(t_config *config)
 	int	i;
 
 	i = 0;
-	while (i < config->number_of_philosophers)
+	while (i < config->num_of_philo)
 	{
 		if (pthread_join(config->threads[i], NULL) != 0)
 			return (1);
@@ -53,7 +53,7 @@ int	main(int ac, char **av)
 	}
 	else
 		printf("Initialization failed.\n");
-	if (config.is_limited && config.full_philosophers == config.number_of_philosophers)
+	if (config.is_limited && config.full_philosophers == config.num_of_philo)
 		printf("FULL PHILOSOPHERS, THE SIMULATION IS OVER.\n");
 	free_all(&config);
 	return (0);

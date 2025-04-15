@@ -68,7 +68,7 @@ int	check_full_philos(t_config *config)
 {
 	int result;
 	pthread_mutex_lock(&config->end_mutex);
-	if (config->full_philosophers >= config->number_of_philosophers)
+	if (config->full_philosophers >= config->num_of_philo)
 		config->simulation_over = 1;
 	result = config->simulation_over;
 	pthread_mutex_unlock(&config->end_mutex);
@@ -83,7 +83,7 @@ void	*monitor_simulation(void *arg)
 	while (!is_simulation_over(config))
 	{
 		i = 0;
-		while (i < config->number_of_philosophers)
+		while (i < config->num_of_philo)
 		{
 			if (check_philo_death(&config->philos[i], config))
 				return (NULL);
