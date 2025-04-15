@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init_config.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: anamedin <anamedin@student.42barcel>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/15 16:53:45 by anamedin          #+#    #+#             */
+/*   Updated: 2025/04/15 16:59:42 by anamedin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/philo.h"
 
-int ft_limits_args(char *str, int i)
+int	ft_limits_args(char *str, int i)
 {
-	long long nbr;
+	long long	nbr;
 
 	nbr = ft_atoi(str);
 	if (i == 1 && (nbr <= 0 || nbr > PHILO_LIMITATION))
@@ -28,14 +40,14 @@ int	check_argument_limits(int ac, char **av)
 	return (0);
 }
 
-int is_valid_arguments(int ac, char **av)
+int	is_valid_arguments(int ac, char **av)
 {
 	if ((ac != 5 && ac != 6) || ft_strdigit(av, 1, ac - 1))
 		return (0);
 	return (1);
 }
 
-int set_eat_limit(t_config *config, int ac, char **av)
+int	set_eat_limit(t_config *config, int ac, char **av)
 {
 	if (ac == 6)
 	{
@@ -52,16 +64,10 @@ int set_eat_limit(t_config *config, int ac, char **av)
 	return (0);
 }
 
-int init_config(int ac, char **av, t_config *config)
+int	init_config(int ac, char **av, t_config *config)
 {
-	config->philos = NULL;
-	config->forks = NULL;
-	config->threads = NULL;
 	if (!is_valid_arguments(ac, av))
-	{
-		printf("Error: Incorrect number of arguments\n");
-		return (1);
-	}
+		return (printf("Error: Incorrect number of arguments\n"), 1);
 	if (check_argument_limits(ac, av))
 		return (1);
 	config->num_of_philo = ft_atoi(av[1]);
@@ -71,8 +77,8 @@ int init_config(int ac, char **av, t_config *config)
 	config->meals_eaten = 0;
 	if (set_eat_limit(config, ac, av))
 		return (1);
-	if (config->num_of_philo <= 0 || config->time_to_die <= 0 ||
-		config->time_to_eat <= 0 || config->time_to_sleep <= 0)
+	if (config->num_of_philo <= 0 || config->time_to_die <= 0 \
+			|| config->time_to_eat <= 0 || config->time_to_sleep <= 0)
 		return (1);
 	config->full_philosophers = 0;
 	config->simulation_over = 0;
@@ -82,7 +88,7 @@ int init_config(int ac, char **av, t_config *config)
 	config->threads = malloc(sizeof(pthread_t) * config->num_of_philo);
 	if (!config->philos || !config->forks || !config->threads)
 		return (1);
-	pthread_mutex_init(&(config->print_mutex), NULL); //printf
-	pthread_mutex_init(&(config->end_mutex), NULL); // check if simulation is over
+	pthread_mutex_init(&(config->print_mutex), NULL);
+	pthread_mutex_init(&(config->end_mutex), NULL);
 	return (0);
 }

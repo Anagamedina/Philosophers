@@ -1,21 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_args.c                                       :+:      :+:    :+:   */
+/*   init_structs.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anamedin <anamedin@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 17:26:02 by anamedin          #+#    #+#             */
-/*   Updated: 2025/04/02 19:09:18 by anamedin         ###   ########.fr       */
+/*   Updated: 2025/04/15 17:04:22 by anamedin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-
-void init_philosophers(t_config *config)
+void	init_philosophers(t_config *config)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < config->num_of_philo)
@@ -32,22 +31,23 @@ void init_philosophers(t_config *config)
 		config->philos[i].left_fork = &(config->forks[i]);
 		config->philos[i].death_timer = 0;
 		if (i == 0)
-			config->philos[i].right_fork = &(config->forks[config->num_of_philo - 1]);
+			config->philos[i].right_fork \
+				= &(config->forks[config->num_of_philo - 1]);
 		else
 			config->philos[i].right_fork = &(config->forks[i - 1]);
-		pthread_mutex_init(&config->philos[i].deadline_to_eat, NULL); // dead_timer
+		pthread_mutex_init(&config->philos[i].deadline_to_eat, NULL);
 		i ++;
 	}
 }
 
 void	init_mutex(t_config *config)
 {
-	int i = 0;
+	int	i;
 
+	i = 0;
 	while (i < config->num_of_philo)
 	{
 		pthread_mutex_init(&(config->forks[i]), NULL);
 		i++;
 	}
 }
-

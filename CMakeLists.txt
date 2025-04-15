@@ -12,6 +12,7 @@ add_executable(philosophers
         philo/src/death_monitor.c
         philo/src/fork_control.c
         philo/src/init_structs.c
+        philo/src/time.c
         philo/src/parse_utils.c
         philo/src/init_config.c
         philo/src/free.c

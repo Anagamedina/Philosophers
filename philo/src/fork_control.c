@@ -6,76 +6,52 @@
 /*   By: anamedin <anamedin@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 17:42:04 by anamedin          #+#    #+#             */
-/*   Updated: 2025/04/10 11:05:17 by anamedin         ###   ########.fr       */
+/*   Updated: 2025/04/15 16:52:33 by anamedin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-unsigned long get_time_in_ms(void)
+int	philo_take_forks(t_philos *philo)
 {
-	struct timeval tv;
-	unsigned long time_ms;
-
-	gettimeofday(&tv, NULL);
-	time_ms = (tv.tv_sec * 1000UL) + (tv.tv_usec / 1000);
-	return (time_ms);
-}
-
-void ft_usleep(unsigned long time_ms)
-{
-	unsigned long start = get_time_in_ms();
-	while ((get_time_in_ms() - start) < time_ms)
-		usleep(100);
-}
-
-void	philo_die(int id, t_config *config)
-{
-	pthread_mutex_lock(&config->print_mutex);
-	printf(RED "%lu %d died\n" RESET, get_time_in_ms() - config->simulation_time, id);
-	pthread_mutex_unlock(&config->print_mutex);
-
-}
-
-int	check_full_and_stop(t_philos *philo)
-{
-	t_config	*config;
-
-	config = philo->config;
-	if (config->is_limited == 1
-		&& philo->meals_eaten >= config->max_meals)
+	pthread_mutex_lock(philo->left_fork);
+	if (is_simulation_over(philo->config))
 	{
-		pthread_mutex_lock(&config->end_mutex);
-		if (!philo->is_full)
-		{
-			philo->is_full = 1;
-			config->full_philosophers++;
-			if (config->full_philosophers >= config->num_of_philo)
-				config->simulation_over = 1;
-		}
-		pthread_mutex_unlock(&config->end_mutex);
+		pthread_mutex_unlock(philo->left_fork);
 		return (1);
 	}
+	print_action_color(philo, "has taken a fork", GREEN);
+	pthread_mutex_lock(philo->right_fork);
+	if (is_simulation_over(philo->config))
+	{
+		pthread_mutex_unlock(philo->left_fork);
+		pthread_mutex_unlock(philo->right_fork);
+		return (1);
+	}
+	print_action_color(philo, "has taken a fork", GREEN);
 	return (0);
 }
-   
-void	print_action_color(t_philos *philo, const char *action, const char *color)
+
+void	philo_eat(t_philos *philo)
 {
-	t_config *config = philo->config;
+	print_action_color(philo, "is eating", BLUE);
+	pthread_mutex_lock(&philo->deadline_to_eat);
+	philo->death_timer = get_time_in_ms() + philo->time_to_die;
+	pthread_mutex_unlock(&philo->deadline_to_eat);
+	ft_usleep(philo->config->time_to_eat);
+	philo->meals_eaten++;
+}
 
-	if (is_simulation_over(config))
-		return ;
+void	philo_sleep_and_think(t_philos *philo)
+{
+	print_action_color(philo, "is sleeping", YELLOW);
+	ft_usleep(philo->time_to_sleep);
+	if (!is_simulation_over(philo->config))
+		print_action_color(philo, "is thinking", CYAN);
+}
 
-	pthread_mutex_lock(&config->print_mutex);
-	if (!is_simulation_over(config))
-	{
-		unsigned long timestamp = get_time_in_ms() - config->simulation_time;
-		printf("%s%lu %d %s%s\n",
-			color,
-			timestamp,
-			philo->id,
-			action,
-			RESET);
-	}
-	pthread_mutex_unlock(&config->print_mutex);
+void	release_forks(t_philos *philo)
+{
+	pthread_mutex_unlock(philo->left_fork);
+	pthread_mutex_unlock(philo->right_fork);
 }

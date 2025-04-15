@@ -6,7 +6,7 @@
 /*   By: anamedin <anamedin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 16:57:20 by anamedin          #+#    #+#             */
-/*   Updated: 2025/04/10 15:31:22 by anamedin         ###   ########.fr       */
+/*   Updated: 2025/04/15 17:15:51 by anamedin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,15 @@ typedef struct s_philos
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				max_meals;
-	unsigned long		death_timer;
+	unsigned long	death_timer;
 	int				is_full;
 	int				meals_eaten;
-	struct s_config		*config;
+	struct s_config	*config;
 	pthread_t		thread_id;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	deadline_to_eat;
-} t_philos;
+}			t_philos;
 
 typedef struct s_config
 {
@@ -64,7 +64,7 @@ typedef struct s_config
 	pthread_t		*threads;
 	pthread_mutex_t	print_mutex;
 	pthread_mutex_t	end_mutex;
-} t_config;
+}		t_config;
 
 // parsing.c
 int					init_config(int ac, char **av, t_config *config);
@@ -80,6 +80,7 @@ int					check_argument_limits(int ac, char **av);
 // time.c
 unsigned long		get_time_in_ms(void);
 void				ft_usleep(unsigned long time_ms);
+void				philo_sleep_and_think(t_philos *philo);
 
 // philosopher.c
 void				*philosopher_routine(void *arg);
@@ -89,12 +90,12 @@ void				release_forks(t_philos *philo);
 
 // actions.c
 void				take_forks(t_philos *philo);
-void				print_action_color(t_philos *philo,
-					const char *action, const char *color);
+void				print_action_color(t_philos *philo, \
+		const char *action, const char *color);
 
 // state..c
 int					philo_take_forks(t_philos *philo);
-void				philo_eats(t_philos *philo);
+void				philo_eat(t_philos *philo);
 void				philo_die(int id, t_config *config);
 
 // init.c

@@ -6,7 +6,7 @@
 /*   By: anamedin <anamedin@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:20:07 by anamedin          #+#    #+#             */
-/*   Updated: 2025/04/10 10:27:35 by anamedin         ###   ########.fr       */
+/*   Updated: 2025/04/15 16:52:11 by anamedin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,9 @@ static void	safe_end_simulation(t_config *config, int id)
 
 int	check_philo_death(t_philos *philo, t_config *config)
 {
-	unsigned long now = get_time_in_ms();
+	unsigned long	now;
 
+	now = get_time_in_ms();
 	pthread_mutex_lock(&philo->deadline_to_eat);
 	if (now >= philo->death_timer)
 	{
@@ -37,13 +38,13 @@ int	check_philo_death(t_philos *philo, t_config *config)
 		return (1);
 	}
 	pthread_mutex_unlock(&philo->deadline_to_eat);
-
 	return (0);
 }
 
 int	check_full_philos(t_config *config)
 {
-	int result;
+	int	result;
+
 	pthread_mutex_lock(&config->end_mutex);
 	if (config->full_philosophers >= config->num_of_philo)
 		config->simulation_over = 1;
@@ -54,9 +55,10 @@ int	check_full_philos(t_config *config)
 
 void	*monitor_simulation(void *arg)
 {
-	t_config	*config = (t_config *)arg;
+	t_config	*config;
 	int			i;
 
+	config = (t_config *)arg;
 	while (!is_simulation_over(config))
 	{
 		i = 0;
@@ -77,7 +79,8 @@ int	create_monitor(t_config *config)
 {
 	pthread_t	monitor_thread;
 
-	if (pthread_create(&monitor_thread, NULL, &monitor_simulation, (void *)config) != 0)
+	if (pthread_create(&monitor_thread, NULL, &monitor_simulation, \
+				(void *)config) != 0)
 	{
 		perror("Error creando el hilo del monitor");
 		return (1);

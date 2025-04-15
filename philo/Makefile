@@ -11,20 +11,20 @@
 # **************************************************************************** #
 
 
-# Variables de compilación
+# Variables
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -Iinclude #-g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -Iinclude
 RM = rm -rf
 
-# Nombre del ejecutable y archivo de cabecera
+# Executable name and header
 NAME = philo
 HEADER = include/philo.h
 
-# Directorios
+# Directories
 SRC_DIR = src
 OBJ_DIR = obj
 
-# Archivos fuente y objetos
+# Source and object files
 SRCS = $(SRC_DIR)/main.c \
        $(SRC_DIR)/parse_utils.c \
        $(SRC_DIR)/init_structs.c \
@@ -32,36 +32,34 @@ SRCS = $(SRC_DIR)/main.c \
        $(SRC_DIR)/free.c \
        $(SRC_DIR)/philosopher_threads.c \
        $(SRC_DIR)/fork_control.c \
+       $(SRC_DIR)/time.c \
        $(SRC_DIR)/death_monitor.c
-#include "philo.h"
 
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
-# Regla por defecto
+# Default rule
 all: $(NAME)
 
-# Crear el ejecutable
+# Linking rule
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 	chmod +x $(NAME)
+	@echo "\033[1;32mCompilation finished successfully! ✅\033[0m"
 
-# Regla para compilar archivos .c a .o
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEADER) Makefile
+# Compilation rule
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEADER)
 	@mkdir -p $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# Eliminar archivos objeto
+# Clean object files
 clean:
 	$(RM) $(OBJ_DIR)
 
-# Eliminar archivos objeto y el archivo ejecutable
+# Clean all generated files
 fclean: clean
 	$(RM) $(NAME)
 
-# Reconstruir todo
+# Recompile everything
 re: fclean all
 
-# Archivos que no son objetivos de archivos
 .PHONY: all clean fclean re
-
-
