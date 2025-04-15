@@ -12,15 +12,27 @@
 
 #include "../include/philo.h"
 
-void print_fork_taken(t_philos *philo, char* str_fork)
+void	print_action_color(t_philos *philo, const char *action, const char *color)
 {
 	t_config *config = philo->config;
 
-	pthread_mutex_lock(&philo->config->print_mutex);
-	printf(BLUE "%d %d  %s \n"  RESET, get_time_in_ms() - config->simulation_time
-, philo->id, str_fork);
-	pthread_mutex_unlock(&philo->config->print_mutex);
+	if (is_simulation_over(config))
+		return ;
+
+	pthread_mutex_lock(&config->print_mutex);
+	if (!is_simulation_over(config))
+	{
+		unsigned long timestamp = get_time_in_ms() - config->simulation_time;
+		printf("%s%lu %d %s%s\n",
+			color,
+			timestamp,
+			philo->id,
+			action,
+			RESET);
+	}
+	pthread_mutex_unlock(&config->print_mutex);
 }
+
 
 size_t	ft_strlen(char *s)
 {
@@ -49,10 +61,10 @@ int ft_strdigit(char **av, int i, int j)
     return (0);
 }
 
-int ft_atoi(const char* str)
+unsigned long ft_atoi(const char* str)
 {
     int             i;
-    unsigned long long nbr;
+    unsigned  long nbr;
     int             flag;
 
     i = 0;

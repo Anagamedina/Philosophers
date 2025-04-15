@@ -50,7 +50,7 @@ static void	safe_end_simulation(t_config *config, int id)
 }
 int	check_philo_death(t_philos *philo, t_config *config)
 {
-	int	now = get_time_in_ms();
+	unsigned long now = get_time_in_ms();
 
 	pthread_mutex_lock(&philo->deadline_to_eat);
 	if (now >= philo->death_timer)
@@ -60,8 +60,10 @@ int	check_philo_death(t_philos *philo, t_config *config)
 		return (1);
 	}
 	pthread_mutex_unlock(&philo->deadline_to_eat);
+
 	return (0);
 }
+
 int	check_full_philos(t_config *config)
 {
 	int result;

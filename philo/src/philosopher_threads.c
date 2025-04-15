@@ -19,7 +19,7 @@ int	handle_one_philosopher(t_philos *philo)
 	if (config->number_of_philosophers == 1)
 	{
 		pthread_mutex_lock(philo->left_fork);
-		print_fork_taken(philo, PRINT_LEFT);
+		print_action_color(philo, "has taken a fork", GREEN);
 		ft_usleep(config->time_to_die);
 		philo_die(philo->id, config);
 		return (1);
@@ -27,23 +27,7 @@ int	handle_one_philosopher(t_philos *philo)
 	return (0);
 }
 
-void	take_forks(t_philos *philo)
-{
-	if (philo->id % 2 == 0)
-	{
-		pthread_mutex_lock(philo->left_fork);
-		print_fork_taken(philo, PRINT_LEFT);
-		pthread_mutex_lock(philo->right_fork);
-		print_fork_taken(philo, PRINT_RIGHT);
-	}
-	else
-	{
-		pthread_mutex_lock(philo->right_fork);
-		print_fork_taken(philo, PRINT_LEFT);
-		pthread_mutex_lock(philo->left_fork);
-		print_fork_taken(philo, PRINT_RIGHT);
-	}
-}
+
 
 int	check_full_and_stop(t_philos *philo)
 {
@@ -66,18 +50,10 @@ int	check_full_and_stop(t_philos *philo)
 }
 
 
-void	release_forks(t_philos *philo)
-{
-	pthread_mutex_unlock(philo->left_fork);
-	pthread_mutex_unlock(philo->right_fork);
-}
-
-
 void	*philosopher_routine(void *arg)
 {
 	t_philos	*philo = (t_philos *)arg;
 	t_config	*config = philo->config;
-	int			end_flag = 0;
 
 	while (get_time_in_ms() < config->simulation_time)
 		usleep(100);
@@ -88,68 +64,51 @@ void	*philosopher_routine(void *arg)
 
 	if (handle_one_philosopher(philo) == 1)
 		return (NULL);
-
 	if (philo->id % 2 == 1)
 		ft_usleep(philo->time_to_eat / 2);
-
-	while (end_flag == 0)
+	while (!is_simulation_over(config))
 	{
-		// 🔐 Comprobar antes de actuar si la simulación terminó
-		pthread_mutex_lock(&config->end_mutex);
-		end_flag = config->simulation_over;
-		pthread_mutex_unlock(&config->end_mutex);
-		if (end_flag)
-			break;
-
-		// Tomar tenedores
 		pthread_mutex_lock(philo->left_fork);
-		print_fork_taken(philo, PRINT_LEFT);
+		if (is_simulation_over(config))
+		{
+			pthread_mutex_unlock(philo->left_fork);
+			break;
+		}
+		print_action_color(philo, "has taken a fork", GREEN);
+
 		pthread_mutex_lock(philo->right_fork);
-		print_fork_taken(philo, PRINT_RIGHT);
+		if (is_simulation_over(config))
+		{
+			pthread_mutex_unlock(philo->left_fork);
+			pthread_mutex_unlock(philo->right_fork);
+			break;
+		}
+		print_action_color(philo, "has taken a fork", GREEN);
 
-		// Comer
-		pthread_mutex_lock(&config->print_mutex);
-		printf(GREEN "%d %d is eating\n" RESET,
-			get_time_in_ms() - config->simulation_time, philo->id);
-		pthread_mutex_unlock(&config->print_mutex);
-
+		print_action_color(philo, "is eating", BLUE);
 		pthread_mutex_lock(&philo->deadline_to_eat);
 		philo->death_timer = get_time_in_ms() + philo->time_to_die;
 		pthread_mutex_unlock(&philo->deadline_to_eat);
-
 		ft_usleep(config->time_to_eat);
-
 		philo->meals_eaten++;
-
 		if (check_full_and_stop(philo) == 1)
+		{
+			pthread_mutex_unlock(philo->left_fork);
+			pthread_mutex_unlock(philo->right_fork);
 			break;
-
+		}
 		pthread_mutex_unlock(philo->left_fork);
 		pthread_mutex_unlock(philo->right_fork);
 
-		// Dormir
-		pthread_mutex_lock(&config->end_mutex);
-		end_flag = config->simulation_over;
-		pthread_mutex_unlock(&config->end_mutex);
-		if (end_flag)
+		if (is_simulation_over(config))
 			break;
-
-		philo_sleeps(philo->id, config);
+		print_action_color(philo, "is sleeping", YELLOW);
 		ft_usleep(philo->time_to_sleep);
 
-		// Pensar
-		pthread_mutex_lock(&config->end_mutex);
-		end_flag = config->simulation_over;
-		pthread_mutex_unlock(&config->end_mutex);
-		if (end_flag)
+		if (is_simulation_over(config))
 			break;
-
-		philo_thinks(philo->id, config);
+		print_action_color(philo, "is thinking", CYAN);
 	}
-
-	// Seguridad: soltar forks si aún los tiene
-	pthread_mutex_unlock(philo->left_fork);
-	pthread_mutex_unlock(philo->right_fork);
 
 	return (NULL);
 }

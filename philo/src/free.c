@@ -45,11 +45,12 @@ void	destroy_global_mutexes(t_config *config)
 		free(config->threads);
 	config->threads = NULL;
 }*/
-
-void	free_all(t_config *config)
+void free_all(t_config *config)
 {
-	free_philosophers(config);
-	free_forks(config);
-	//free_threads(config);
-	destroy_global_mutexes(config);
+	if (config->philos)
+		free(config->philos);
+	if (config->forks)
+		free(config->forks);
+	if (config->threads)
+		free(config->threads);
 }

@@ -54,6 +54,9 @@ int set_eat_limit(t_config *config, int ac, char **av)
 
 int init_config(int ac, char **av, t_config *config)
 {
+	config->philos = NULL;
+	config->forks = NULL;
+	config->threads = NULL;
 	if (!is_valid_arguments(ac, av))
 	{
 		printf("Error: Incorrect number of arguments\n");
@@ -77,6 +80,8 @@ int init_config(int ac, char **av, t_config *config)
 	config->philos = malloc(sizeof(t_philos) * config->number_of_philosophers);
 	config->forks = malloc(sizeof(pthread_mutex_t) * config->number_of_philosophers);
 	config->threads = malloc(sizeof(pthread_t) * config->number_of_philosophers);
+	if (!config->philos || !config->forks || !config->threads)
+		return (1);
 	pthread_mutex_init(&(config->print_mutex), NULL); //printf
 	pthread_mutex_init(&(config->end_mutex), NULL); // check if simulation is over
 	return (0);
