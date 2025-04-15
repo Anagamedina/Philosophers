@@ -29,25 +29,6 @@ void ft_usleep(unsigned long time_ms)
 		usleep(100);
 }
 
-/****************************************/
-void philo_thinks(int id, t_config *config)
-{
-    pthread_mutex_lock(&config->print_mutex);
-    printf(CYAN "%lu %d is thinking\n" CYAN, get_time_in_ms() - config->simulation_time
-, id);
-    pthread_mutex_unlock(&config->print_mutex);
-}
-
-void	philo_sleeps(int id, t_config *config)
-{
-    pthread_mutex_lock(&config->print_mutex);
-    printf(YELLOW "%lu %d is sleeping\n" RESET, get_time_in_ms() - config->simulation_time
-, id);
-    pthread_mutex_unlock(&config->print_mutex);
-}
-
-
-
 void	philo_die(int id, t_config *config)
 {
 	pthread_mutex_lock(&config->print_mutex);
@@ -56,5 +37,45 @@ void	philo_die(int id, t_config *config)
 
 }
 
+int	check_full_and_stop(t_philos *philo)
+{
+	t_config	*config;
 
+	config = philo->config;
+	if (config->is_limited == 1
+		&& philo->meals_eaten >= config->max_meals)
+	{
+		pthread_mutex_lock(&config->end_mutex);
+		if (!philo->is_full)
+		{
+			philo->is_full = 1;
+			config->full_philosophers++;
+			if (config->full_philosophers >= config->num_of_philo)
+				config->simulation_over = 1;
+		}
+		pthread_mutex_unlock(&config->end_mutex);
+		return (1);
+	}
+	return (0);
+}
    
+void	print_action_color(t_philos *philo, const char *action, const char *color)
+{
+	t_config *config = philo->config;
+
+	if (is_simulation_over(config))
+		return ;
+
+	pthread_mutex_lock(&config->print_mutex);
+	if (!is_simulation_over(config))
+	{
+		unsigned long timestamp = get_time_in_ms() - config->simulation_time;
+		printf("%s%lu %d %s%s\n",
+			color,
+			timestamp,
+			philo->id,
+			action,
+			RESET);
+	}
+	pthread_mutex_unlock(&config->print_mutex);
+}

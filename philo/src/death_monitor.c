@@ -11,31 +11,7 @@
 /* ************************************************************************** */
 
 #include "../include/philo.h"
-/*
-int	check_philo_death(t_philos *philo, t_config *config)
-{
-	int	now = get_time_in_ms();
 
-	pthread_mutex_lock(&philo->deadline_to_eat);
-	if (now >= philo->death_timer)
-	{
-		pthread_mutex_unlock(&philo->deadline_to_eat);
-
-		pthread_mutex_lock(&config->end_mutex);
-		if (config->simulation_over == 0)
-		{
-			config->simulation_over = 1;
-			pthread_mutex_unlock(&config->end_mutex);
-			philo_die(philo->id, config);
-		}
-		else
-			pthread_mutex_unlock(&config->end_mutex);
-		return (1);
-	}
-	pthread_mutex_unlock(&philo->deadline_to_eat);
-	return (0);
-}
-*/
 static void	safe_end_simulation(t_config *config, int id)
 {
 	pthread_mutex_lock(&config->end_mutex);
@@ -48,6 +24,7 @@ static void	safe_end_simulation(t_config *config, int id)
 	else
 		pthread_mutex_unlock(&config->end_mutex);
 }
+
 int	check_philo_death(t_philos *philo, t_config *config)
 {
 	unsigned long now = get_time_in_ms();

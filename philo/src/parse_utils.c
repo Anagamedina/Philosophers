@@ -12,28 +12,6 @@
 
 #include "../include/philo.h"
 
-void	print_action_color(t_philos *philo, const char *action, const char *color)
-{
-	t_config *config = philo->config;
-
-	if (is_simulation_over(config))
-		return ;
-
-	pthread_mutex_lock(&config->print_mutex);
-	if (!is_simulation_over(config))
-	{
-		unsigned long timestamp = get_time_in_ms() - config->simulation_time;
-		printf("%s%lu %d %s%s\n",
-			color,
-			timestamp,
-			philo->id,
-			action,
-			RESET);
-	}
-	pthread_mutex_unlock(&config->print_mutex);
-}
-
-
 size_t	ft_strlen(char *s)
 {
 	size_t	i;
@@ -44,7 +22,6 @@ size_t	ft_strlen(char *s)
 	return (i);
 }
 
-// Función que valida que los argumentos sean dígitos
 int ft_strdigit(char **av, int i, int j)
 {
     while (av[j])

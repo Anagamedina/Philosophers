@@ -12,7 +12,6 @@
 
 #include "../include/philo.h"
 
-
 int	handle_one_philosopher(t_philos *philo)
 {
 	t_config	*config;
@@ -29,29 +28,7 @@ int	handle_one_philosopher(t_philos *philo)
 	return (0);
 }
 
-int	check_full_and_stop(t_philos *philo)
-{
-	t_config	*config;
-
-	config = philo->config;
-	if (config->is_limited == 1
-		&& philo->meals_eaten >= config->max_meals)
-	{
-		pthread_mutex_lock(&config->end_mutex);
-		if (!philo->is_full)
-		{
-			philo->is_full = 1;
-			config->full_philosophers++;
-			if (config->full_philosophers >= config->num_of_philo)
-				config->simulation_over = 1;
-		}
-		pthread_mutex_unlock(&config->end_mutex);
-		return (1);
-	}
-	return (0);
-}
-
-static int	philo_take_forks(t_philos *philo)
+int	philo_take_forks(t_philos *philo)
 {
 	pthread_mutex_lock(philo->left_fork);
 	if (is_simulation_over(philo->config))
@@ -71,7 +48,7 @@ static int	philo_take_forks(t_philos *philo)
 	return (0);
 }
 
-static void	philo_eat(t_philos *philo)
+void	philo_eat(t_philos *philo)
 {
 	print_action_color(philo, "is eating", BLUE);
 	pthread_mutex_lock(&philo->deadline_to_eat);

@@ -92,10 +92,9 @@ void				take_forks(t_philos *philo);
 void				print_action_color(t_philos *philo,
 					const char *action, const char *color);
 
-// state.c
-void				philo_thinks(int id, t_config *config);
+// state..c
+int					philo_take_forks(t_philos *philo);
 void				philo_eats(t_philos *philo);
-void				philo_sleeps(int id, t_config *config);
 void				philo_die(int id, t_config *config);
 
 // init.c

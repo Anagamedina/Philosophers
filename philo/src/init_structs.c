@@ -31,7 +31,6 @@ void init_philosophers(t_config *config)
 		config->philos[i].config = config;
 		config->philos[i].left_fork = &(config->forks[i]);
 		config->philos[i].death_timer = 0;
-		//config->philos[i].death_timer = config->simulation_time + config->time_to_die;
 		if (i == 0)
 			config->philos[i].right_fork = &(config->forks[config->num_of_philo - 1]);
 		else
