@@ -66,6 +66,25 @@ static void	philo_sleep_and_think(t_philos *philo)
 		print_action_color(philo, "is thinking", CYAN);
 }
 
+
+void	release_forks(t_philos *philo)
+{
+	pthread_mutex_unlock(philo->left_fork);
+	pthread_mutex_unlock(philo->right_fork);
+}
+
+
+static void	philo_sync_start(t_philos *philo)
+{
+	t_config	*config;
+
+	config = philo->config;
+	while (get_time_in_ms() < config->simulation_time)
+		usleep(100);
+	pthread_mutex_lock(&philo->deadline_to_eat);
+	philo->death_timer = get_time_in_ms() + config->time_to_die;
+	pthread_mutex_unlock(&philo->deadline_to_eat);
+}
 void	*philosopher_routine(void *arg)
 {
 	t_philos	*philo;
@@ -73,11 +92,12 @@ void	*philosopher_routine(void *arg)
 
 	philo = (t_philos *)arg;
 	config = philo->config;
-	while (get_time_in_ms() < config->simulation_time)
+	philo_sync_start(philo);
+	/*while (get_time_in_ms() < config->simulation_time)
 		usleep(100);
 	pthread_mutex_lock(&philo->deadline_to_eat);
 	philo->death_timer = get_time_in_ms() + config->time_to_die;
-	pthread_mutex_unlock(&philo->deadline_to_eat);
+	pthread_mutex_unlock(&philo->deadline_to_eat);*/
 	if (handle_one_philosopher(philo) == 1)
 		return (NULL);
 	if (philo->id % 2 == 1)
@@ -89,12 +109,10 @@ void	*philosopher_routine(void *arg)
 		philo_eat(philo);
 		if (check_full_and_stop(philo))
 		{
-			pthread_mutex_unlock(philo->left_fork);
-			pthread_mutex_unlock(philo->right_fork);
+			release_forks(philo);
 			break;
 		}
-		pthread_mutex_unlock(philo->left_fork);
-		pthread_mutex_unlock(philo->right_fork);
+		release_forks(philo);
 		if (is_simulation_over(config))
 			break;
 		philo_sleep_and_think(philo);
