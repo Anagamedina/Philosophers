@@ -28,7 +28,8 @@ void	ft_usleep(unsigned long time_ms)
 
 	start = get_time_in_ms();
 	while ((get_time_in_ms() - start) < time_ms)
-		usleep(100);
+		usleep(50);
+		// usleep(100);
 }
 
 void	philo_die(int id, t_config *config)

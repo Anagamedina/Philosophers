@@ -72,10 +72,8 @@ int					ft_strdigit(char **av, int i, int j);
 unsigned long		ft_atoi(const char *str);
 int					ft_limits_args(char *str, int i);
 size_t				ft_strlen(char *s);
-void				ft_putstr_fd(char *s, int fd);
 int					set_eat_limit(t_config *config, int ac, char **av);
 int					is_valid_arguments(int ac, char **av);
-int					check_argument_limits(int ac, char **av);
 
 // time.c
 unsigned long		get_time_in_ms(void);
@@ -89,7 +87,6 @@ int					check_full_and_stop(t_philos *philo);
 void				release_forks(t_philos *philo);
 
 // actions.c
-void				take_forks(t_philos *philo);
 void				print_action_color(t_philos *philo, \
 		const char *action, const char *color);
 
@@ -109,5 +106,9 @@ int					create_monitor(t_config *config);
 
 // cleanup.c
 void				free_all(t_config *config);
+void				destroy_global_mutexes(t_config *config);
+void				free_philosophers(t_config *config);
+void				free_forks(t_config *config);
+
 
 #endif

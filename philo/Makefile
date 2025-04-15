@@ -10,10 +10,11 @@
 #                                                                              #
 # **************************************************************************** #
 
-
 # Variables
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -Iinclude
+#CFLAGS = -Wall -Wextra -Werror -Iinclude
+CFLAGS = -Wall -Wextra -Werror -lpthread #-g -fsanitize=address
+#CFLAGS = -Wall -Wextra -Werror -lpthread -g -fsanitize=address
 RM = rm -rf
 
 # Executable name and header

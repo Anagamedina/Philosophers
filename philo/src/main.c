@@ -40,7 +40,8 @@ int	main(int ac, char **av)
 {
 	t_config	config;
 
-	config.simulation_over = 0;
+	if (is_valid_arguments(ac, av) == 1 )//|| check_argument_limits(ac, av) == 1)
+		return (printf("Initialization failed 11.\n"), 1);
 	if (init_config(ac, av, &config) == 0)
 	{
 		init_mutex(&config);
@@ -55,6 +56,9 @@ int	main(int ac, char **av)
 		printf("Initialization failed.\n");
 	if (config.is_limited && config.full_philosophers == config.num_of_philo)
 		printf("FULL PHILOSOPHERS, THE SIMULATION IS OVER.\n");
+	free_philosophers(&config);
+	free_forks(&config);
+	destroy_global_mutexes(&config);
 	free_all(&config);
 	return (0);
 }

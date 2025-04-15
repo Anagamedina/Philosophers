@@ -40,8 +40,6 @@ void	free_forks(t_config *config)
 		pthread_mutex_destroy(&config->forks[i]);
 		i++;
 	}
-	free(config->forks);
-	config->forks = NULL;
 }
 
 void	destroy_global_mutexes(t_config *config)
