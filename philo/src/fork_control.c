@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fork_control.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anamedin <anamedin@student.42barcel>       +#+  +:+       +#+        */
+/*   By: anamedin <anamedin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 17:42:04 by anamedin          #+#    #+#             */
-/*   Updated: 2025/04/15 16:52:33 by anamedin         ###   ########.fr       */
+/*   Updated: 2025/04/16 20:08:29 by anamedin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	philo_sleep_and_think(t_philos *philo)
 {
 	print_action_color(philo, "is sleeping", YELLOW);
 	ft_usleep(philo->time_to_sleep);
-	if (!is_simulation_over(philo->config))
+	if (is_simulation_over(philo->config) == 0)
 		print_action_color(philo, "is thinking", CYAN);
 }
 

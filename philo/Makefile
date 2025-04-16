@@ -6,7 +6,7 @@
 #    By: anamedin <anamedin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/02 17:19:39 by anamedin          #+#    #+#              #
-#    Updated: 2025/04/16 13:13:51 by anamedin         ###   ########.fr        #
+#    Updated: 2025/04/16 20:23:30 by anamedin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,7 +46,7 @@ $(NAME): $(OBJS)
 	@echo "\033[1;32mCompilation finished successfully! ✅\033[0m"
 
 # Compilation rule
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEADER)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEADER) Makefile 
 	@mkdir -p $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
