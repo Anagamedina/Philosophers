@@ -6,7 +6,7 @@
 /*   By: anamedin <anamedin@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 16:53:45 by anamedin          #+#    #+#             */
-/*   Updated: 2025/04/15 16:59:42 by anamedin         ###   ########.fr       */
+/*   Updated: 2025/04/16 13:11:35 by anamedin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,6 @@ int	init_config(int ac, char **av, t_config *config)
 	config->philos = NULL;
 	config->forks = NULL;
 	config->threads = NULL;
-	//if (!is_valid_arguments(ac, av))
-	//	return (1);
-
 	config->num_of_philo = ft_atoi(av[1]);
 	config->time_to_die = ft_atoi(av[2]);
 	config->time_to_eat = ft_atoi(av[3]);

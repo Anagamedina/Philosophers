@@ -6,7 +6,7 @@
 /*   By: anamedin <anamedin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 16:57:20 by anamedin          #+#    #+#             */
-/*   Updated: 2025/04/15 17:15:51 by anamedin         ###   ########.fr       */
+/*   Updated: 2025/04/16 13:20:37 by anamedin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 # include <pthread.h>
 # include <sys/time.h>
 
-# define PHILO_LIMITATION 200
 # define RESET   "\033[0m"
 # define RED     "\033[0;31m"
 # define GREEN   "\033[0;32m"
@@ -103,12 +102,12 @@ int					create_threads(t_config *config);
 // monitor.c
 int					is_simulation_over(t_config *config);
 int					create_monitor(t_config *config);
+void				safe_end_simulation(t_config *config, int id);
 
 // cleanup.c
 void				free_all(t_config *config);
 void				destroy_global_mutexes(t_config *config);
 void				free_philosophers(t_config *config);
 void				free_forks(t_config *config);
-
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: anamedin <anamedin@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 20:12:52 by anamedin          #+#    #+#             */
-/*   Updated: 2025/04/15 17:05:14 by anamedin         ###   ########.fr       */
+/*   Updated: 2025/04/16 13:25:50 by anamedin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	handle_one_philosopher(t_philos *philo)
 		pthread_mutex_lock(philo->left_fork);
 		print_action_color(philo, "has taken a fork", GREEN);
 		ft_usleep(config->time_to_die);
-		print_action_color(philo, "died", RED);
+		safe_end_simulation(config, philo->id);
 		return (1);
 	}
 	return (0);

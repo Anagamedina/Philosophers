@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   time.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anamedin <anamedin@student.42barcel>       +#+  +:+       +#+        */
+/*   By: anamedin <anamedin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 17:10:31 by anamedin          #+#    #+#             */
-/*   Updated: 2025/04/15 17:13:02 by anamedin         ###   ########.fr       */
+/*   Updated: 2025/04/16 13:41:58 by anamedin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	ft_usleep(unsigned long time_ms)
 	start = get_time_in_ms();
 	while ((get_time_in_ms() - start) < time_ms)
 		usleep(50);
-		// usleep(100);
+		//usleep(100);
 }
 
 void	philo_die(int id, t_config *config)

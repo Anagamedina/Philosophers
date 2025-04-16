@@ -6,7 +6,7 @@
 /*   By: anamedin <anamedin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 16:52:31 by anamedin          #+#    #+#             */
-/*   Updated: 2025/04/10 15:34:55 by anamedin         ###   ########.fr       */
+/*   Updated: 2025/04/16 13:12:02 by anamedin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	main(int ac, char **av)
 {
 	t_config	config;
 
-	if (is_valid_arguments(ac, av) == 1 )//|| check_argument_limits(ac, av) == 1)
+	if (is_valid_arguments(ac, av) == 1)
 		return (printf("Initialization failed 11.\n"), 1);
 	if (init_config(ac, av, &config) == 0)
 	{

@@ -6,13 +6,13 @@
 /*   By: anamedin <anamedin@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:20:07 by anamedin          #+#    #+#             */
-/*   Updated: 2025/04/15 16:52:11 by anamedin         ###   ########.fr       */
+/*   Updated: 2025/04/16 13:19:40 by anamedin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-static void	safe_end_simulation(t_config *config, int id)
+void	safe_end_simulation(t_config *config, int id)
 {
 	pthread_mutex_lock(&config->end_mutex);
 	if (config->simulation_over == 0)
