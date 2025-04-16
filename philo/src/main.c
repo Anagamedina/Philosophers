@@ -47,7 +47,9 @@ int	main(int ac, char **av)
 		init_mutex(&config);
 		init_philosophers(&config);
 		create_threads(&config);
-		if (create_monitor(&config) != 0)
+		//if (create_monitor(&config) != 0)
+		//	return (1);
+		if (config.num_of_philo > 1 && create_monitor(&config) != 0)
 			return (1);
 		if (join_threads(&config) == 1)
 			return (1);
@@ -56,8 +58,8 @@ int	main(int ac, char **av)
 		printf("Initialization failed.\n");
 	if (config.is_limited && config.full_philosophers == config.num_of_philo)
 		printf("FULL PHILOSOPHERS, THE SIMULATION IS OVER.\n");
-	free_philosophers(&config);
 	free_forks(&config);
+	free_philosophers(&config);
 	destroy_global_mutexes(&config);
 	free_all(&config);
 	return (0);

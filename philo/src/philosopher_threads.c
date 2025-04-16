@@ -22,6 +22,7 @@ int	handle_one_philosopher(t_philos *philo)
 		pthread_mutex_lock(philo->left_fork);
 		print_action_color(philo, "has taken a fork", GREEN);
 		ft_usleep(config->time_to_die);
+		pthread_mutex_unlock(philo->left_fork); //deadlock!!
 		safe_end_simulation(config, philo->id);
 		return (1);
 	}

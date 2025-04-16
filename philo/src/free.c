@@ -24,8 +24,8 @@ void	free_philosophers(t_config *config)
 		pthread_mutex_destroy(&config->philos[i].deadline_to_eat);
 		i++;
 	}
-	free(config->philos);
-	config->philos = NULL;
+	//free(config->philos);
+	//config->philos = NULL;
 }
 
 void	free_forks(t_config *config)
@@ -50,10 +50,11 @@ void	destroy_global_mutexes(t_config *config)
 
 void	free_all(t_config *config)
 {
-	if (config->philos)
-		free(config->philos);
 	if (config->forks)
 		free(config->forks);
+	if (config->philos)
+		free(config->philos);
 	if (config->threads)
 		free(config->threads);
+
 }
