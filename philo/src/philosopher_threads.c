@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosopher_threads.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anamedin <anamedin@student.42barcel>       +#+  +:+       +#+        */
+/*   By: anamedin <anamedin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 20:12:52 by anamedin          #+#    #+#             */
-/*   Updated: 2025/04/16 13:25:50 by anamedin         ###   ########.fr       */
+/*   Updated: 2025/04/16 20:42:14 by anamedin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static void	philo_sync_start(t_philos *philo)
 	pthread_mutex_unlock(&philo->deadline_to_eat);
 }
 
-static void	philo_delay_if_odd(t_philos *philo)
+void	philo_delay_if_odd(t_philos *philo)
 {
 	if (philo->id % 2 == 1)
 		ft_usleep(philo->time_to_eat / 2);
@@ -58,9 +58,9 @@ void	*philosopher_routine(void *arg)
 	if (handle_one_philosopher(philo) == 1)
 		return (NULL);
 	philo_delay_if_odd(philo);
-	while (!is_simulation_over(config))
+	while (is_simulation_over(config) == 0)
 	{
-		if (philo_take_forks(philo))
+		if (philo_take_forks(philo) == 1)
 			break ;
 		philo_eat(philo);
 		if (check_full_and_stop(philo))
