@@ -6,7 +6,7 @@
 /*   By: anamedin <anamedin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 17:10:31 by anamedin          #+#    #+#             */
-/*   Updated: 2025/04/17 13:12:23 by anamedin         ###   ########.fr       */
+/*   Updated: 2025/04/17 13:17:03 by anamedin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ unsigned long	get_time_in_ms(void)
 	unsigned long	time_ms;
 
 	gettimeofday(&tv, NULL);
-	time_ms = (tv.tv_sec * 1000UL) + (tv.tv_usec / 1000);
+	time_ms = (tv.tv_sec * 1000UL) + (tv.tv_usec / 1000UL);
 	return (time_ms);
 }
 
