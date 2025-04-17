@@ -33,3 +33,25 @@ La simulación termina si un filósofo muere o todos han comido las veces requer
 ## ✅ Resultado final
 La implementación detecta correctamente muertes, evita condiciones de carrera, y gestiona correctamente el fin de la simulación, funcionando tanto en modo ilimitado como con número de comidas definido.
 
+2. Abre el proyecto en VS Code
+Abre la carpeta raíz del proyecto (no solo src, sino todo mi_proyecto/).
+
+3. Selecciona el kit de compilador
+Abre el Command Palette (Ctrl+Shift+P) → escribe:
+CMake: Select a Kit
+→ Elige el compilador que tengas instalado (por ejemplo, GCC 11.3.0).
+
+4. Selecciona el directorio de build
+En el mismo menú, selecciona: CMake: Select Build Directory → escoge la carpeta build/ (si no existe, la crea).
+
+5. Configura el proyecto
+Pulsa Ctrl+Shift+P → CMake: Configure
+
+Esto generará archivos de configuración en build/.
+
+6. Compila tu proyecto
+Puedes pulsar:
+
+Ctrl+Shift+P → CMake: Build
+
+O haz clic en el botón “Build” que aparece en la barra inferior

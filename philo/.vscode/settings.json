@@ -2,5 +2,6 @@
     "files.associations": {
         "philo.h": "c",
         "*.h": "c"
-    }
+    },
+    "cmake.sourceDirectory": "/home/daruuu/CLionProjects/Philosophers_ana"
 }
