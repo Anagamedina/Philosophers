@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_structs.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anamedin <anamedin@student.42barcel>       +#+  +:+       +#+        */
+/*   By: anamedin <anamedin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 17:26:02 by anamedin          #+#    #+#             */
-/*   Updated: 2025/04/15 17:04:22 by anamedin         ###   ########.fr       */
+/*   Updated: 2025/04/17 13:05:00 by anamedin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,15 @@ void	init_philosophers(t_config *config)
 		config->philos[i].meals_eaten = 0;
 		config->philos[i].config = config;
 		config->philos[i].left_fork = &(config->forks[i]);
-		config->philos[i].death_timer = 0;
+		//config->philos[i].death_timer = 0;
 		if (i == 0)
 			config->philos[i].right_fork \
 				= &(config->forks[config->num_of_philo - 1]);
 		else
 			config->philos[i].right_fork = &(config->forks[i - 1]);
+		pthread_mutex_lock(&config->philos[i].deadline_to_eat);
+		config->philos[i].death_timer = get_time_in_ms() + config->time_to_die;
+		pthread_mutex_unlock(&config->philos[i].deadline_to_eat);
 		pthread_mutex_init(&config->philos[i].deadline_to_eat, NULL);
 		i ++;
 	}

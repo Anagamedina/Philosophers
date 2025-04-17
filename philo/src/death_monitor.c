@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   death_monitor.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anamedin <anamedin@student.42barcel>       +#+  +:+       +#+        */
+/*   By: anamedin <anamedin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:20:07 by anamedin          #+#    #+#             */
-/*   Updated: 2025/04/16 13:19:40 by anamedin         ###   ########.fr       */
+/*   Updated: 2025/04/17 13:12:11 by anamedin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	check_philo_death(t_philos *philo, t_config *config)
 
 	now = get_time_in_ms();
 	pthread_mutex_lock(&philo->deadline_to_eat);
-	if (now >= philo->death_timer)
+	if (now > philo->death_timer)
 	{
 		pthread_mutex_unlock(&philo->deadline_to_eat);
 		safe_end_simulation(config, philo->id);

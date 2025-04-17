@@ -6,7 +6,7 @@
 /*   By: anamedin <anamedin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 17:42:04 by anamedin          #+#    #+#             */
-/*   Updated: 2025/04/16 20:43:21 by anamedin         ###   ########.fr       */
+/*   Updated: 2025/04/17 13:12:00 by anamedin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ void	philo_eat(t_philos *philo)
 	print_action_color(philo, "is eating", BLUE);
 	pthread_mutex_lock(&philo->deadline_to_eat);
 	philo->death_timer = get_time_in_ms() + philo->time_to_die;
+	philo->meals_eaten++;
 	pthread_mutex_unlock(&philo->deadline_to_eat);
 	ft_usleep(philo->config->time_to_eat);
-	philo->meals_eaten++;
 }
 
 void	philo_sleep_and_think(t_philos *philo)
@@ -49,7 +49,6 @@ void	philo_sleep_and_think(t_philos *philo)
 	if (is_simulation_over(philo->config) == 0)
 		print_action_color(philo, "is thinking", CYAN);
 }
-
 void	release_forks(t_philos *philo)
 {
 	pthread_mutex_unlock(philo->left_fork);

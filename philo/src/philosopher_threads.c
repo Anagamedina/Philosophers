@@ -6,7 +6,7 @@
 /*   By: anamedin <anamedin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 20:12:52 by anamedin          #+#    #+#             */
-/*   Updated: 2025/04/16 20:42:14 by anamedin         ###   ########.fr       */
+/*   Updated: 2025/04/17 13:11:46 by anamedin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,23 +22,11 @@ int	handle_one_philosopher(t_philos *philo)
 		pthread_mutex_lock(philo->left_fork);
 		print_action_color(philo, "has taken a fork", GREEN);
 		ft_usleep(config->time_to_die);
-		pthread_mutex_unlock(philo->left_fork); //deadlock!!
+		pthread_mutex_unlock(philo->left_fork);
 		safe_end_simulation(config, philo->id);
 		return (1);
 	}
 	return (0);
-}
-
-static void	philo_sync_start(t_philos *philo)
-{
-	t_config	*config;
-
-	config = philo->config;
-	while (get_time_in_ms() < config->simulation_time)
-		usleep(100);
-	pthread_mutex_lock(&philo->deadline_to_eat);
-	philo->death_timer = get_time_in_ms() + config->time_to_die;
-	pthread_mutex_unlock(&philo->deadline_to_eat);
 }
 
 void	philo_delay_if_odd(t_philos *philo)
@@ -54,7 +42,6 @@ void	*philosopher_routine(void *arg)
 
 	philo = (t_philos *)arg;
 	config = philo->config;
-	philo_sync_start(philo);
 	if (handle_one_philosopher(philo) == 1)
 		return (NULL);
 	philo_delay_if_odd(philo);

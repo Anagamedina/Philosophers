@@ -6,7 +6,7 @@
 /*   By: anamedin <anamedin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 17:10:31 by anamedin          #+#    #+#             */
-/*   Updated: 2025/04/16 20:27:09 by anamedin         ###   ########.fr       */
+/*   Updated: 2025/04/17 13:12:23 by anamedin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void	ft_usleep(unsigned long time_ms)
 
 	start = get_time_in_ms();
 	while ((get_time_in_ms() - start) < time_ms)
-		//usleep(50);
 		usleep(200);
 }
 
