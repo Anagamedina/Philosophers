@@ -6,7 +6,7 @@
 /*   By: anamedin <anamedin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 16:57:20 by anamedin          #+#    #+#             */
-/*   Updated: 2025/04/16 13:20:37 by anamedin         ###   ########.fr       */
+/*   Updated: 2025/04/21 20:58:43 by anamedin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ typedef struct s_config
 	int				simulation_over;
 	unsigned long	simulation_time;
 	t_philos		*philos;
+	pthread_t		monitor_thread;
 	pthread_mutex_t	*forks;
 	pthread_t		*threads;
 	pthread_mutex_t	print_mutex;

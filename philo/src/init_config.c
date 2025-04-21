@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_config.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anamedin <anamedin@student.42barcel>       +#+  +:+       +#+        */
+/*   By: anamedin <anamedin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 16:53:45 by anamedin          #+#    #+#             */
-/*   Updated: 2025/04/16 13:11:35 by anamedin         ###   ########.fr       */
+/*   Updated: 2025/04/21 21:02:19 by anamedin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ int	init_config(int ac, char **av, t_config *config)
 	config->threads = malloc(sizeof(pthread_t) * config->num_of_philo);
 	if (!config->philos || !config->forks || !config->threads)
 		return (1);
+	config->monitor_thread = 0;
 	pthread_mutex_init(&(config->print_mutex), NULL);
 	pthread_mutex_init(&(config->end_mutex), NULL);
 	return (0);

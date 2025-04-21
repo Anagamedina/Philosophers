@@ -6,7 +6,7 @@
 /*   By: anamedin <anamedin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:20:07 by anamedin          #+#    #+#             */
-/*   Updated: 2025/04/17 13:12:11 by anamedin         ###   ########.fr       */
+/*   Updated: 2025/04/21 21:00:24 by anamedin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,14 +77,11 @@ void	*monitor_simulation(void *arg)
 
 int	create_monitor(t_config *config)
 {
-	pthread_t	monitor_thread;
-
-	if (pthread_create(&monitor_thread, NULL, &monitor_simulation, \
+	if (pthread_create(&config->monitor_thread, NULL, &monitor_simulation, \
 				(void *)config) != 0)
 	{
 		perror("Error creando el hilo del monitor");
 		return (1);
 	}
-	pthread_detach(monitor_thread);
 	return (0);
 }

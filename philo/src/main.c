@@ -6,7 +6,7 @@
 /*   By: anamedin <anamedin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 16:52:31 by anamedin          #+#    #+#             */
-/*   Updated: 2025/04/16 20:35:46 by anamedin         ###   ########.fr       */
+/*   Updated: 2025/04/21 21:00:43 by anamedin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ int	main(int ac, char **av)
 			return (1);
 		if (join_threads(&config) == 1)
 			return (1);
+		pthread_join(config.monitor_thread, NULL);
+	
 	}
 	else
 		return (printf("Invalid arguments.\n"), 1);
