@@ -6,14 +6,14 @@
 #    By: anamedin <anamedin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/02 17:19:39 by anamedin          #+#    #+#              #
-#    Updated: 2025/04/21 21:05:44 by anamedin         ###   ########.fr        #
+#    Updated: 2025/04/24 23:11:04 by anamedin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Variables
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -pthread #-g -fsanitize=address
-#CFLAGS = -Wall -Wextra -Werror -pthread -g -fsanitize=thread
+#CFLAGS = -Wall -Wextra -Werror -pthread #-g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -pthread -g -fsanitize=thread
 RM = rm -rf
 
 # Executable name and header

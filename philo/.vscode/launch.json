@@ -5,7 +5,9 @@
             "name": "Debug Philo",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/philo",
+            // "program": "${workspaceFolder}/philo",
+            "program": "${workspaceFolder}/build/philosophers",
+
             "args": ["2", "400", "200", "200"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

@@ -6,7 +6,7 @@
 /*   By: anamedin <anamedin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 20:12:52 by anamedin          #+#    #+#             */
-/*   Updated: 2025/04/17 13:11:46 by anamedin         ###   ########.fr       */
+/*   Updated: 2025/04/24 22:59:30 by anamedin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	handle_one_philosopher(t_philos *philo)
 		print_action_color(philo, "has taken a fork", GREEN);
 		ft_usleep(config->time_to_die);
 		pthread_mutex_unlock(philo->left_fork);
-		safe_end_simulation(config, philo->id);
+		philo_die(philo->id, config);
 		return (1);
 	}
 	return (0);
@@ -43,7 +43,9 @@ void	*philosopher_routine(void *arg)
 	philo = (t_philos *)arg;
 	config = philo->config;
 	if (handle_one_philosopher(philo) == 1)
+	{
 		return (NULL);
+	}
 	philo_delay_if_odd(philo);
 	while (is_simulation_over(config) == 0)
 	{

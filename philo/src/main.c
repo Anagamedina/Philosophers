@@ -6,7 +6,7 @@
 /*   By: anamedin <anamedin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 16:52:31 by anamedin          #+#    #+#             */
-/*   Updated: 2025/04/21 21:00:43 by anamedin         ###   ########.fr       */
+/*   Updated: 2025/04/24 23:06:42 by anamedin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	join_threads(t_config *config)
 	return (0);
 }
 
-int	main(int ac, char **av)
+/*int	main(int ac, char **av)
 {
 	t_config	config;
 
@@ -46,6 +46,7 @@ int	main(int ac, char **av)
 	{
 		init_mutex(&config);
 		init_philosophers(&config);
+		//creando hilos
 		create_threads(&config);
 		if (config.num_of_philo > 1 && create_monitor(&config) != 0)
 			return (1);
@@ -58,6 +59,43 @@ int	main(int ac, char **av)
 		return (printf("Invalid arguments.\n"), 1);
 	if (config.is_limited && config.full_philosophers == config.num_of_philo)
 		printf("FULL PHILOSOPHERS, THE SIMULATION IS OVER.\n");
+	free_forks(&config);
+	free_philosophers(&config);
+	destroy_global_mutexes(&config);
+	free_all(&config);
+	return (0);
+}*/
+int	main(int ac, char **av)
+{
+	t_config	config;
+
+	if (is_valid_arguments(ac, av) == 1)
+		return (printf("Invalid arguments.\n"), 1);
+	if (init_config(ac, av, &config) == 0)
+	{
+		init_mutex(&config);
+		init_philosophers(&config);
+
+		if (config.num_of_philo == 1)
+		{
+			handle_one_philosopher(&config.philos[0]);  // ejecuta directamente
+		}
+		else
+		{
+			create_threads(&config);
+			if (create_monitor(&config) != 0)
+				return (1);
+			if (join_threads(&config) == 1)
+				return (1);
+			pthread_join(config.monitor_thread, NULL);
+		}
+	}
+	else
+		return (printf("Invalid arguments.\n"), 1);
+
+	if (config.is_limited && config.full_philosophers == config.num_of_philo)
+		printf("FULL PHILOSOPHERS, THE SIMULATION IS OVER.\n");
+
 	free_forks(&config);
 	free_philosophers(&config);
 	destroy_global_mutexes(&config);
