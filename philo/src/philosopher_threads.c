@@ -6,7 +6,7 @@
 /*   By: anamedin <anamedin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 20:12:52 by anamedin          #+#    #+#             */
-/*   Updated: 2025/04/25 00:38:25 by anamedin         ###   ########.fr       */
+/*   Updated: 2025/04/25 01:02:31 by anamedin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,15 +46,14 @@ void	*philosopher_routine(void *arg)
 	{
 		return (NULL);
 	}
-	//while (get_time_in_ms() < config->simulation_time)
-		//usleep(100); 
 	philo_delay_if_odd(philo);
 	while (is_simulation_over(config) == 0)
 	{
 		if (philo_take_forks(philo) == 1)
 			break ;
 		philo_eat(philo);
-		release_forks(philo);
+		pthread_mutex_unlock(philo->left_fork);
+		pthread_mutex_unlock(philo->right_fork);
 		if (is_simulation_over(config))
 			break ;
 		philo_sleep_and_think(philo);

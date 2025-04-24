@@ -6,7 +6,7 @@
 /*   By: anamedin <anamedin@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 16:53:34 by anamedin          #+#    #+#             */
-/*   Updated: 2025/04/15 16:53:37 by anamedin         ###   ########.fr       */
+/*   Updated: 2025/04/25 01:06:40 by anamedin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ void	free_philosophers(t_config *config)
 		pthread_mutex_destroy(&config->philos[i].deadline_to_eat);
 		i++;
 	}
-	//free(config->philos);
-	//config->philos = NULL;
 }
 
 void	free_forks(t_config *config)
@@ -56,5 +54,4 @@ void	free_all(t_config *config)
 		free(config->philos);
 	if (config->threads)
 		free(config->threads);
-
 }
