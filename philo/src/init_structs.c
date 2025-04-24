@@ -6,7 +6,7 @@
 /*   By: anamedin <anamedin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 17:26:02 by anamedin          #+#    #+#             */
-/*   Updated: 2025/04/25 01:09:39 by anamedin         ###   ########.fr       */
+/*   Updated: 2025/04/25 01:22:48 by anamedin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	init_philosophers(t_config *config)
 				= &(config->forks[config->num_of_philo - 1]);
 		else
 			config->philos[i].right_fork = &(config->forks[i - 1]);
+		pthread_mutex_init(&config->philos[i].deadline_to_eat, NULL);
 		pthread_mutex_lock(&config->philos[i].deadline_to_eat);
 		config->philos[i].death_timer = get_time_in_ms() + config->time_to_die;
 		pthread_mutex_unlock(&config->philos[i].deadline_to_eat);
@@ -51,5 +52,5 @@ void	init_mutex(t_config *config)
 		pthread_mutex_init(&(config->forks[i]), NULL);
 		i++;
 	}
-	pthread_mutex_init(&config->philos[i].deadline_to_eat, NULL);
+	//pthread_mutex_init(&config->philos[i].deadline_to_eat, NULL);
 }
