@@ -6,7 +6,7 @@
 /*   By: anamedin <anamedin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 17:10:31 by anamedin          #+#    #+#             */
-/*   Updated: 2025/04/17 13:17:03 by anamedin         ###   ########.fr       */
+/*   Updated: 2025/04/25 00:37:07 by anamedin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	philo_die(int id, t_config *config)
 	pthread_mutex_unlock(&config->print_mutex);
 }
 
-int	check_full_and_stop(t_philos *philo)
+/*int	check_full_and_stop(t_philos *philo)
 {
 	t_config	*config;
 
@@ -48,7 +48,7 @@ int	check_full_and_stop(t_philos *philo)
 		&& philo->meals_eaten >= config->max_meals)
 	{
 		pthread_mutex_lock(&config->end_mutex);
-		if (!philo->is_full)
+		if (philo->is_full == 0)
 		{
 			philo->is_full = 1;
 			config->full_philosophers++;
@@ -59,7 +59,11 @@ int	check_full_and_stop(t_philos *philo)
 		return (1);
 	}
 	return (0);
-}
+}*/
+
+
+
+
 
 void	print_action_color(t_philos *philo, const char *action, \
 		const char *color)

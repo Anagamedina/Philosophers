@@ -6,7 +6,7 @@
 /*   By: anamedin <anamedin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:20:07 by anamedin          #+#    #+#             */
-/*   Updated: 2025/04/21 21:00:24 by anamedin         ###   ########.fr       */
+/*   Updated: 2025/04/25 00:40:47 by anamedin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ int	check_philo_death(t_philos *philo, t_config *config)
 {
 	unsigned long	now;
 
-	now = get_time_in_ms();
 	pthread_mutex_lock(&philo->deadline_to_eat);
+	now = get_time_in_ms();
 	if (now > philo->death_timer)
 	{
 		pthread_mutex_unlock(&philo->deadline_to_eat);
@@ -41,7 +41,7 @@ int	check_philo_death(t_philos *philo, t_config *config)
 	return (0);
 }
 
-int	check_full_philos(t_config *config)
+/*int	check_full_philos(t_config *config)
 {
 	int	result;
 
@@ -51,7 +51,32 @@ int	check_full_philos(t_config *config)
 	result = config->simulation_over;
 	pthread_mutex_unlock(&config->end_mutex);
 	return (result);
+}*/
+
+int	check_full_philos(t_config *config)
+{
+	int	full = 0;
+	int	i = 0;
+
+	while (i < config->num_of_philo)
+	{
+		pthread_mutex_lock(&config->philos[i].deadline_to_eat);
+		if (config->philos[i].is_full == 1)
+			full++;
+		pthread_mutex_unlock(&config->philos[i].deadline_to_eat);
+		i++;
+	}
+	if (full >= config->num_of_philo)
+	{
+		pthread_mutex_lock(&config->end_mutex);
+		config->simulation_over = 1;
+		pthread_mutex_unlock(&config->end_mutex);
+		printf("FULL PHILOSOPHERS, THE SIMULATION IS OVER.\n"); // 🎯 Aquí
+		return (1);
+	}
+	return (0);
 }
+
 
 void	*monitor_simulation(void *arg)
 {
