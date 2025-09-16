@@ -71,7 +71,7 @@ CFLAGS = -Wall -Wextra -Werror -pthread -g -fsanitize=thread
 
 make CFLAGS="-Wall -Wextra -Werror -pthread -g -fsanitize=thread"
 ./philo 4 310 100 100
-
+```
 
 
 ## ✅ Resultado final
