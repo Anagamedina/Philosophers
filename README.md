@@ -30,6 +30,50 @@ La simulación termina si un filósofo muere o todos han comido las veces requer
 - **Filósofos impares**: se retrasa su inicio.
 - **Todos revisan `simulation_over`** antes de actuar y liberan recursos si es necesario.
 
+
+## 🔍 Casos de Prueba y Detección de Errores
+
+### ⚡ Flags útiles
+
+**AddressSanitizer (ASan):** detecta fugas de memoria, accesos inválidos.  
+```make
+CFLAGS = -Wall -Wextra -Werror -pthread -g -fsanitize=address
+
+ThreadSanitizer (TSan): detecta condiciones de carrera y mal uso de mutex.
+
+CFLAGS = -Wall -Wextra -Werror -pthread -g -fsanitize=thread
+🧪 Casos básicos
+# 1 filósofo (muere inevitablemente)
+./philo 1 800 200 200
+
+# 5 filósofos, tiempos holgados (nadie muere)
+./philo 5 800 200 200
+
+# Tiempos ajustados, debería morir alguien
+./philo 4 310 100 100
+
+# Con número de comidas (termina correctamente)
+./philo 5 800 200 200 7
+
+🔥 Casos de estrés
+# Muchos filósofos (test de rendimiento)
+./philo 200 800 200 200
+
+# Mueren rápido, deben morir todos antes de comer
+./philo 5 200 210 210
+
+🧵 Casos para detectar Race Conditions (usar TSan)
+# Posible race en simulation_over o died
+./philo 4 310 100 100
+
+# Posible race en contador de comidas
+./philo 4 410 200 200 3
+
+make CFLAGS="-Wall -Wextra -Werror -pthread -g -fsanitize=thread"
+./philo 4 310 100 100
+
+
+
 ## ✅ Resultado final
 La implementación detecta correctamente muertes, evita condiciones de carrera, y gestiona correctamente el fin de la simulación, funcionando tanto en modo ilimitado como con número de comidas definido.
 
